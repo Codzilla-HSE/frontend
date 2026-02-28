@@ -1,7 +1,11 @@
-export default function PanelHeader({ title, iconIcon = null }) {
+export default function PanelHeader({ title, Icon = null }) {
   return (
     <div className="panel-header">
-      {iconIcon && <img src={iconIcon} alt={title} className="panel-header-icon" />}
+      {Icon && (
+        <div className="panel-header-icon">
+          <Icon size={16} />
+        </div>
+      )}
       <span className="panel-header-title">{title}</span>
     </div>
   );

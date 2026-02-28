@@ -1,102 +1,57 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import LeftWorkspace from './components/LeftWorkspace';
-import RightWorkspace from './components/RightWorkspace';
-import { VerticalResizer } from './components/ui/Resizers';
+// src/App.jsx
+import { useState, useEffect } from 'react';
+import { PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
+import ActionBar from './components/layout/ActionBar';
+import LeftWorkspace from './components/workspace/LeftWorkspace';
+import RightWorkspace from './components/workspace/RightWorkspace';
 import './App.css';
 
 function App() {
-  const [mainSplitState, setMainSplitState] = useState(50);
-  const [leftColSplitState, setLeftColSplitState] = useState(70);
-  const [rightColSplitState, setRightColSplitState] = useState(50);
-
-  const [activeResizer, setActiveResizer] = useState(null);
-
-  const [language, setLanguage] = useState('python');
-  const [code, setCode] = useState('# Напишите ваш код здесь...');
-
-  const leftColumnRef = useRef(null);
-  const rightColumnRef = useRef(null);
-
-  const startDragging = useCallback((resizerId) => (e) => {
-    setActiveResizer(resizerId);
-    e.preventDefault();
-  }, []);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isSwapped, setIsSwapped] = useState(false);
 
   useEffect(() => {
-    if (!activeResizer) return;
+    if (isDarkMode) {
+      document.body.classList.remove('light-theme');
+    } else {
+      document.body.classList.add('light-theme');
+    }
+  }, [isDarkMode]);
 
-    const handleMouseMove = (e) => {
-      if (activeResizer === 'main-vertical') {
-        const newWidth = (e.clientX / window.innerWidth) * 100;
-        if (newWidth > 20 && newWidth < 80) setMainSplitState(newWidth);
-      } 
-      else if (activeResizer === 'left-horizontal' && leftColumnRef.current) {
-        const rect = leftColumnRef.current.getBoundingClientRect();
-        const newHeight = ((e.clientY - rect.top) / rect.height) * 100;
-        if (newHeight > 15 && newHeight < 85) setLeftColSplitState(newHeight);
-      }
-      else if (activeResizer === 'right-horizontal' && rightColumnRef.current) {
-        const rect = rightColumnRef.current.getBoundingClientRect();
-        const newHeight = ((e.clientY - rect.top) / rect.height) * 100;
-        if (newHeight > 15 && newHeight < 85) setRightColSplitState(newHeight);
-      }
-    };
-
-    const handleMouseUp = () => setActiveResizer(null);
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [activeResizer]);
-
-  let cursorStyle = 'default';
-  if (activeResizer === 'main-vertical') cursorStyle = 'col-resize';
-  if (activeResizer === 'left-horizontal' || activeResizer === 'right-horizontal') cursorStyle = 'row-resize';
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => console.error(err));
+    } else {
+      document.exitFullscreen();
+    }
+  };
 
   return (
-    <div className="layout-container" style={{ cursor: cursorStyle }}>
+    <div className="layout-container">
+      <Header />
       
-      {/* ШАПКА СТРАНИЦЫ */}
-      <header className="page-header">
-        <h2>CodeZilla</h2>
-      </header>
+      <ActionBar 
+        toggleSwap={() => setIsSwapped(!isSwapped)} 
+        toggleFullscreen={toggleFullscreen} 
+        toggleTheme={() => setIsDarkMode(!isDarkMode)} 
+        isDarkMode={isDarkMode} 
+      />
 
-      {/* РАБОЧЕЕ ПРОСТРАНСТВО */}
       <main className="workspace">
-        
-        <LeftWorkspace 
-          ref={leftColumnRef}
-          width={mainSplitState}
-          splitState={leftColSplitState}
-          activeResizer={activeResizer}
-          startDragging={startDragging}
-          language={language}
-          setLanguage={setLanguage}
-          code={code}
-          setCode={setCode}
-        />
-
-        <VerticalResizer 
-          isDragging={activeResizer === 'main-vertical'} 
-          onMouseDown={startDragging('main-vertical')} 
-        />
-
-        <RightWorkspace 
-          ref={rightColumnRef}
-          width={100 - mainSplitState}
-          splitState={rightColSplitState}
-          activeResizer={activeResizer}
-          startDragging={startDragging}
-        />
-
+        <PanelGroup direction="horizontal">
+          {isSwapped ? <RightWorkspace /> : <LeftWorkspace isDarkMode={isDarkMode} />}
+          
+          <PanelResizeHandle className="resizer-vertical">
+            <div className="resizer-line-vertical"></div>
+          </PanelResizeHandle>
+          
+          {isSwapped ? <LeftWorkspace isDarkMode={isDarkMode} /> : <RightWorkspace />}
+        </PanelGroup>
       </main>
 
-      {/* ДНО / ФУТЕР (если понадобится) */}
-      {/* <footer className="page-footer"> ... </footer> */}
-      
+      <Footer />
     </div>
   );
 }

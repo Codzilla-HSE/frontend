@@ -1,8 +1,8 @@
-import playIcon from '../../assets/play-icon.svg';
+import { Play } from 'lucide-react';
 
 export function SubmitButton() {
   return (
-    <button className="btn btn-submit" title="Отправить решение">
+    <button className="btn btn-submit" title="Отправить решение на проверку">
       Submit
     </button>
   );
@@ -10,8 +10,8 @@ export function SubmitButton() {
 
 export function RunButton() {
   return (
-    <button className="btn btn-run" title="Запустить код">
-      <img src={playIcon} alt="Run" />
+    <button className="btn icon-btn" title="Запустить код локально">
+      <Play size={16} />
     </button>
   );
 }
