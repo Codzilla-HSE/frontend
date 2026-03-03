@@ -41,13 +41,21 @@ function App() {
 
       <main className="workspace">
         <PanelGroup direction="horizontal">
-          {isSwapped ? <RightWorkspace /> : <LeftWorkspace isDarkMode={isDarkMode} />}
+          {isSwapped ? (
+            <RightWorkspace position="left" />
+          ) : (
+            <LeftWorkspace isDarkMode={isDarkMode} position="left" />
+          )}
           
           <PanelResizeHandle className="resizer-vertical">
             <div className="resizer-line-vertical"></div>
           </PanelResizeHandle>
           
-          {isSwapped ? <LeftWorkspace isDarkMode={isDarkMode} /> : <RightWorkspace />}
+          {isSwapped ? (
+            <LeftWorkspace isDarkMode={isDarkMode} position="right" />
+          ) : (
+            <RightWorkspace position="right" />
+          )}
         </PanelGroup>
       </main>
 

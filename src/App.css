@@ -17,14 +17,18 @@
 
 /* Светлая тема */
 .light-theme {
-  --bg-main: #f3f4f6;
+  --bg-main: #eef2f6;
   --bg-panel: #ffffff;
-  --bg-header-panel: #f9fafb;
+  --bg-header-panel: #f8fafc;
   --bg-editor: #ffffff;
-  --border-color: #e5e7eb;
+  --border-color: #cbd5e1;
   --accent-color: #3b82f6;
-  --text-primary: #111827;
-  --text-secondary: #6b7280;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+}
+
+.light-theme .panel {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 html, body, #root { max-width: 100%; margin: 0; padding: 0; height: 100%; }
@@ -48,6 +52,11 @@ html, body, #root { max-width: 100%; margin: 0; padding: 0; height: 100%; }
 .header-nav span:hover { color: var(--text-primary); }
 .header-profile { display: flex; align-items: center; cursor: pointer; color: var(--text-secondary); }
 .header-profile:hover { color: var(--text-primary); }
+
+/* --- ИКОНКИ В ШАПКЕ --- */
+.header-actions { display: flex; align-items: center; gap: 16px; }
+.header-icon { cursor: pointer; color: var(--text-secondary); display: flex; transition: 0.2s; }
+.header-icon:hover { color: var(--text-primary); }
 
 .page-footer {
   text-align: center; padding: 6px; font-size: 0.75rem;
@@ -81,7 +90,12 @@ html, body, #root { max-width: 100%; margin: 0; padding: 0; height: 100%; }
 .panel-header-icon { margin-right: 8px; color: var(--text-secondary); display: flex; align-items: center; }
 .panel-header-title { font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); }
 .panel-content { flex-grow: 1; padding: 15px; overflow-y: auto; }
-.toolbar-container { padding: 8px 12px 0 12px; background-color: var(--bg-panel); }
+.toolbar-container {
+  padding: 8px 12px 0 12px;
+  background-color: var(--bg-panel);
+  overflow-x: auto;
+}
+.toolbar-container::-webkit-scrollbar { height: 0px; }
 .editor-wrapper { flex-grow: 1; background-color: var(--bg-editor); border-top: 1px solid var(--border-color); overflow: hidden; }
 
 /* --- Разделители (Resizers) --- */
@@ -93,7 +107,13 @@ html, body, #root { max-width: 100%; margin: 0; padding: 0; height: 100%; }
 .resizer-horizontal:hover .resizer-line-horizontal, .resizer-horizontal[data-resize-handle-state="drag"] .resizer-line-horizontal { background-color: var(--accent-color); }
 
 /* --- Кнопки и UI --- */
-.toolbar { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+.toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  align-items: center;
+  width: 100%;
+}
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   height: 32px; cursor: pointer; border: 1px solid var(--border-color); border-radius: 6px;
@@ -116,6 +136,58 @@ html, body, #root { max-width: 100%; margin: 0; padding: 0; height: 100%; }
   font-family: var(--font-mono); font-size: 14px; font-weight: 600;
   height: 32px; padding: 0 10px; color: #f87171; background: rgba(248, 113, 113, 0.1);
   border: 1px solid rgba(248, 113, 113, 0.2); border-radius: 6px;
+}
+
+.btn, .language-select, .timer-display {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.collapsed-vertical-bar {
+  height: 100%;
+  background-color: var(--bg-header-panel);
+  border: 1px solid var(--border-color);
+  border-radius: 8px; 
+  
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.collapsed-vertical-bar:hover {
+  background-color: var(--bg-panel);
+}
+
+.collapsed-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  
+  writing-mode: horizontal-tb; 
+}
+
+.left-column .collapsed-text {
+  transform: rotate(-90deg);
+}
+
+.right-column .collapsed-text {
+  transform: rotate(90deg);
+}
+
+.collapsed-text svg {
+  display: block;
+  flex-shrink: 0;
 }
 
 /* --- Модальное окно --- */

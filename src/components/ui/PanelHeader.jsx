@@ -1,6 +1,6 @@
-export default function PanelHeader({ title, Icon = null }) {
+export default function PanelHeader({ title, Icon = null, onClick }) {
   return (
-    <div className="panel-header">
+    <div className="panel-header" onClick={onClick}>
       {Icon && (
         <div className="panel-header-icon">
           <Icon size={16} />

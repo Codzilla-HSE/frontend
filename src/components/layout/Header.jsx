@@ -1,4 +1,4 @@
-import { User } from 'lucide-react';
+import { User, Settings } from 'lucide-react';
 
 export default function Header() {
   return (
@@ -13,8 +13,14 @@ export default function Header() {
         </nav>
       </div>
       
-      <div className="header-profile" title="Профиль пользователя">
-        <User size={24} />
+      {/* Новый блок с иконками */}
+      <div className="header-actions">
+        <div className="header-icon" title="Настройки">
+          <Settings size={22} />
+        </div>
+        <div className="header-icon" title="Профиль пользователя">
+          <User size={24} />
+        </div>
       </div>
     </header>
   );
