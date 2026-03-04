@@ -1,66 +1,19 @@
-// src/App.jsx
-import { useState, useEffect } from 'react';
-import { PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
-import ActionBar from './components/layout/ActionBar';
-import LeftWorkspace from './components/workspace/LeftWorkspace';
-import RightWorkspace from './components/workspace/RightWorkspace';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import ButtlePage from './pages/ButtlePage';
+import WorkspacePage from './pages/WorkspacePage';
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(true);
-  const [isSwapped, setIsSwapped] = useState(false);
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.remove('light-theme');
-    } else {
-      document.body.classList.add('light-theme');
-    }
-  }, [isDarkMode]);
-
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => console.error(err));
-    } else {
-      document.exitFullscreen();
-    }
-  };
-
   return (
-    <div className="layout-container">
-      <Header />
-      
-      <ActionBar 
-        toggleSwap={() => setIsSwapped(!isSwapped)} 
-        toggleFullscreen={toggleFullscreen} 
-        toggleTheme={() => setIsDarkMode(!isDarkMode)} 
-        isDarkMode={isDarkMode} 
-      />
-
-      <main className="workspace">
-        <PanelGroup direction="horizontal">
-          {isSwapped ? (
-            <RightWorkspace position="left" />
-          ) : (
-            <LeftWorkspace isDarkMode={isDarkMode} position="left" />
-          )}
-          
-          <PanelResizeHandle className="resizer-vertical">
-            <div className="resizer-line-vertical"></div>
-          </PanelResizeHandle>
-          
-          {isSwapped ? (
-            <LeftWorkspace isDarkMode={isDarkMode} position="right" />
-          ) : (
-            <RightWorkspace position="right" />
-          )}
-        </PanelGroup>
-      </main>
-
-      <Footer />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/buttle" element={<ButtlePage />} />
+        <Route path="/workspace" element={<WorkspacePage />} />
+      </Routes>
+    </Router>
   );
 }
 

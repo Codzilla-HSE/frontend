@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import Editor from "@monaco-editor/react";
-import { Code, Terminal, Import, RotateCcw } from 'lucide-react';
+import { Code, Terminal, Import, RotateCcw, Expand } from 'lucide-react';
 
 import PanelHeader from '../ui/PanelHeader';
 import { RunButton, SubmitButton } from '../ui/Buttons';
@@ -17,8 +17,9 @@ export default function LeftWorkspace({ isDarkMode, position = 'left' }) {
   
   const [isCollapsed, setIsCollapsed] = useState(false);
   const panelRef = useRef(null);
-  
   const fileInputRef = useRef(null);
+  
+  const codeContainerRef = useRef(null); 
 
   const handleFileImport = (e) => {
     const file = e.target.files[0];
@@ -32,6 +33,14 @@ export default function LeftWorkspace({ isDarkMode, position = 'left' }) {
   const confirmReset = () => {
     setCode(DEFAULT_CODE);
     setShowResetModal(false);
+  };
+
+  const toggleEditorFullscreen = () => {
+    if (!document.fullscreenElement) {
+      codeContainerRef.current?.requestFullscreen().catch(err => console.error(err));
+    } else {
+      document.exitFullscreen();
+    }
   };
 
   return (
@@ -58,43 +67,53 @@ export default function LeftWorkspace({ isDarkMode, position = 'left' }) {
       ) : (
         <PanelGroup direction="vertical">
           <Panel defaultSize={70} minSize={15} className="panel">
-            <PanelHeader title="Код" Icon={Code} />
-            <div className="toolbar-container">
-               <div className="toolbar">
-                  <RunButton />
-                  <SubmitButton />
-                  <Timer />
-                  
-                  <select 
-                    className="language-select" 
-                    value={language} 
-                    onChange={(e) => setLanguage(e.target.value)}
-                  >
-                    <option value="python">Python</option>
-                    <option value="cpp">C++</option>
-                    <option value="javascript">JavaScript</option>
-                  </select>
+            <div 
+              ref={codeContainerRef} 
+              style={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: 'var(--bg-panel)' }}
+            >
+              <PanelHeader title="Код" Icon={Code} />
+              
+              <div className="toolbar-container">
+                 <div className="toolbar">
+                    <RunButton />
+                    <SubmitButton />
+                    <Timer />
+                    
+                    <select 
+                      className="language-select" 
+                      value={language} 
+                      onChange={(e) => setLanguage(e.target.value)}
+                    >
+                      <option value="python">Python</option>
+                      <option value="cpp">C++</option>
+                      <option value="javascript">JavaScript</option>
+                    </select>
 
-                  <button className="btn icon-btn" onClick={() => setShowResetModal(true)} title="Сбросить код">
-                    <RotateCcw size={16} />
-                  </button>
+                    <button className="btn icon-btn" onClick={() => setShowResetModal(true)} title="Сбросить код">
+                      <RotateCcw size={16} />
+                    </button>
 
-                  <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileImport} accept=".js,.py,.cpp,.txt" />
-                  <button className="btn icon-btn" onClick={() => fileInputRef.current.click()} title="Загрузить из файла">
-                    <Import size={16} />
-                  </button>
-               </div>
-            </div>
+                    <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileImport} accept=".js,.py,.cpp,.txt" />
+                    <button className="btn icon-btn" onClick={() => fileInputRef.current.click()} title="Загрузить из файла">
+                      <Import size={16} />
+                    </button>
+                    
+                    <button className="btn icon-btn" onClick={toggleEditorFullscreen} title="Развернуть/свернуть окно">
+                      <Expand size={16} />
+                    </button>
+                 </div>
+              </div>
 
-            <div className="editor-wrapper">
-              <Editor
-                height="100%"
-                theme={isDarkMode ? "vs-dark" : "light"}
-                language={language}
-                value={code}
-                onChange={(value) => setCode(value)}
-                options={{ fontSize: 15, minimap: { enabled: false }, automaticLayout: true, padding: { top: 10 } }}
-              />
+              <div className="editor-wrapper">
+                <Editor
+                  height="100%"
+                  theme={isDarkMode ? "vs-dark" : "light"}
+                  language={language}
+                  value={code}
+                  onChange={(value) => setCode(value)}
+                  options={{ fontSize: 15, minimap: { enabled: false }, automaticLayout: true, padding: { top: 10 } }}
+                />
+              </div>
             </div>
           </Panel>
 

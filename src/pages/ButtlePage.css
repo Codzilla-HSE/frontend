@@ -1,0 +1,50 @@
+.buttle-main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #1a1a2e 0%, var(--bg-main) 100%);
+  color: var(--text-primary);
+}
+
+.buttle-title {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-family: var(--font-ui);
+  text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.buttle-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.btn-battle {
+  padding: 16px 60px;
+  font-size: 1.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(180deg, #d32f2f 0%, #b71c1c 100%);
+  border: 2px solid #ff5252;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(211, 47, 47, 0.4), inset 0 2px 2px rgba(255, 255, 255, 0.3);
+  transition: all 0.15s ease-in-out;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  font-family: var(--font-ui);
+  letter-spacing: 2px;
+}
+
+.btn-battle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(211, 47, 47, 0.6), inset 0 2px 2px rgba(255, 255, 255, 0.4);
+  background: linear-gradient(180deg, #f44336 0%, #d32f2f 100%);
+}
+
+.btn-battle:active {
+  transform: scale(0.98);
+}
