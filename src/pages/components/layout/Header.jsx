@@ -1,11 +1,16 @@
 import { User, Settings, Swords, LogIn } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-export default function Header({ user, onSettingsClick }) {
+export default function Header({ user, onSettingsClick, onNavClick }) {
   const navigate = useNavigate();
-  const location = useLocation(); // Позволяет узнать текущий путь
+  const location = useLocation();
 
-  const handleLogoClick = () => {
+  const handleGenericNav = () => {
+    if (onNavClick) {
+      onNavClick();
+      return;
+    }
+
     if (!user) {
       navigate('/login');
       return;
@@ -21,21 +26,32 @@ export default function Header({ user, onSettingsClick }) {
     }
   };
 
+  const handleSettings = () => {
+    if (!user) {
+      handleGenericNav();
+      return;
+    }
+    
+    if (onSettingsClick) {
+      onSettingsClick();
+    }
+  };
+
   return (
     <header className="page-header">
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div className="header-logo" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
+        <div className="header-logo" onClick={handleGenericNav} style={{ cursor: 'pointer' }}>
           <h2>CodeZilla</h2>
         </div>
         <nav className="header-nav">
-          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span onClick={handleGenericNav} style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
             <Swords size={18} /> PVP
           </span>
         </nav>
       </div>
       
       <div className="header-actions">
-        <div className="header-icon" title="Настройки" onClick={onSettingsClick}>
+        <div className="header-icon" title="Настройки" onClick={handleSettings}>
           <Settings size={22} />
         </div>
         
@@ -47,7 +63,7 @@ export default function Header({ user, onSettingsClick }) {
         ) : (
           <button 
             className="btn" 
-            onClick={() => navigate('/login')}
+            onClick={handleGenericNav}
             style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
           >
             <LogIn size={16} /> Войти

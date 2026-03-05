@@ -13,13 +13,14 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  const handleResetToLogin = () => {
+    setView('login');
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      // ---------------------------------------------------------
-      // РУЧКА ДЛЯ БЭКЕНДА: Авторизация
-      // ---------------------------------------------------------
       await new Promise(resolve => setTimeout(resolve, 800));
       navigate('/buttle');
     } catch (error) {
@@ -33,14 +34,6 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      // ---------------------------------------------------------
-      // РУЧКА ДЛЯ БЭКЕНДА: Регистрация
-      // const response = await fetch('https://api.yoursite.com/register', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, nickname, password })
-      // });
-      // ---------------------------------------------------------
       await new Promise(resolve => setTimeout(resolve, 800));
       alert('Регистрация успешна! Теперь вы можете войти.');
       setView('login');
@@ -55,14 +48,6 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      // ---------------------------------------------------------
-      // РУЧКА ДЛЯ БЭКЕНДА: Восстановление пароля
-      // const response = await fetch('https://api.yoursite.com/forgot-password', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email })
-      // });
-      // ---------------------------------------------------------
       await new Promise(resolve => setTimeout(resolve, 800));
       alert('Инструкции по восстановлению отправлены на ваш email.');
       setView('login');
@@ -75,7 +60,8 @@ export default function LoginPage() {
 
   return (
     <div className="login-page-container">
-      <Header user={null} />
+      {/* Передаем наш кастомный навигатор в Header */}
+      <Header user={null} onNavClick={handleResetToLogin} />
 
       <div className="login-wrapper">
         <div className="glass-panel">
