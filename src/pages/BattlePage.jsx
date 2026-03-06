@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import Header from './components/layout/Header';
@@ -12,6 +12,7 @@ export default function BattlePage() {
   const [showSettings, setShowSettings] = useState(false);
 
   const handleLogout = () => {
+    logout();
     navigate('/login');
   };
 

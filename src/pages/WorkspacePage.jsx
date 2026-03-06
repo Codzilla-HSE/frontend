@@ -10,7 +10,7 @@ import RightWorkspace from './components/workspace/RightWorkspace';
 import './WorkspacePage.css';
 
 function WorkspacePage() {
-  const { user, logout } = useUser();
+  const { logout } = useUser();
   const navigate = useNavigate();
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isSwapped, setIsSwapped] = useState(false);

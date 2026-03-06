@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 import Header from './components/layout/Header';
 import './LoginPage.css';
 import '../App.css';
@@ -12,6 +13,7 @@ export default function LoginPage() {
   const [nickname, setNickname] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useUser();
 
   const handleResetToLogin = () => {
     setView('login');
@@ -22,6 +24,7 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       await new Promise(resolve => setTimeout(resolve, 800));
+      login({ email, nickname: 'Winner' });
       navigate('/battle');
     } catch (error) {
       console.error("Ошибка авторизации", error);
