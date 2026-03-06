@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './components/layout/Header';
 import './LoginPage.css';
-import './WorkspacePage.css';
+import '../App.css';
 
 export default function LoginPage() {
   const [view, setView] = useState('login');
@@ -22,7 +22,7 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       await new Promise(resolve => setTimeout(resolve, 800));
-      navigate('/buttle');
+      navigate('/battle');
     } catch (error) {
       console.error("Ошибка авторизации", error);
     } finally {
@@ -60,7 +60,6 @@ export default function LoginPage() {
 
   return (
     <div className="login-page-container">
-      {/* Передаем наш кастомный навигатор в Header */}
       <Header user={null} onNavClick={handleResetToLogin} />
 
       <div className="login-wrapper">

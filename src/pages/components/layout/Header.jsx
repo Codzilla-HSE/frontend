@@ -1,7 +1,9 @@
+import { useUser } from '../../../context/UserContext';
 import { User, Settings, Swords, LogIn } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-export default function Header({ user, onSettingsClick, onNavClick }) {
+export default function Header({ onSettingsClick, onNavClick }) {
+  const { user } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -19,10 +21,10 @@ export default function Header({ user, onSettingsClick, onNavClick }) {
     if (location.pathname === '/workspace') {
       const confirmLeave = window.confirm("Вы точно хотите покинуть битву? Ваш прогресс может быть потерян.");
       if (confirmLeave) {
-        navigate('/buttle');
+        navigate('/battle');
       }
     } else {
-      navigate('/buttle');
+      navigate('/battle');
     }
   };
 
