@@ -1,4 +1,5 @@
 FrontEnd написан на React с использованием сборщика Vite
+
 Для тестов используются Vitest и React Testing Library (RTL)
 
 ## Требования для запуска
