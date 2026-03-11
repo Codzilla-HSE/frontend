@@ -6,7 +6,7 @@ import Footer from './components/layout/Footer';
 import SettingsModal from './components/ui/SettingsModal';
 import './BattlePage.css';
 import '../api/axiosConfig.js'
-import api from "../api/axiosConfig.js";
+
 
 
 export default function BattlePage() {
