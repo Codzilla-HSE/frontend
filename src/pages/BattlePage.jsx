@@ -5,6 +5,9 @@ import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import SettingsModal from './components/ui/SettingsModal';
 import './BattlePage.css';
+import '../api/axiosConfig.js'
+import api from "../api/axiosConfig.js";
+
 
 export default function BattlePage() {
   const navigate = useNavigate();
@@ -26,7 +29,7 @@ export default function BattlePage() {
           Выбери задачу, напиши оптимальный код и разгроми соперника
         </p>
 
-        <button className="btn-battle" onClick={() => navigate('/workspace')}>
+        <button className="btn-battle" onClick={() => navigate('/workspace')} >
           В БОЙ!
         </button>
       </main>
