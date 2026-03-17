@@ -51,7 +51,7 @@ export default function LoginPage() {
         try {
             const response = await api.post(
                 '/auth/signup',
-                {email: email, rawPassword: password}
+                {email: email, rawPassword: password, nickname: nickname}
             )
 
             const data = await response.data;
