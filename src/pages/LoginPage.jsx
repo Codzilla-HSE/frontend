@@ -47,32 +47,18 @@ export default function LoginPage() {
         if (e && e.preventDefault) e.preventDefault();
 
         setIsLoading(true);
+
         try {
-            const response = await fetch('http://localhost:8080/auth/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: email,
-                    rawPassword: password,
-                    nickname: nickname
-                }),
-                credentials: 'include',
-            });
+            const response = await api.post(
+                '/auth/signup',
+                {email: email, rawPassword: password}
+            )
 
-            if (response.ok) {
-                const data = await response.json();
-
-                alert("Успешная регистрация для " + data.nickname);
-                setView('login');
-
-            } else {
-                const errorData = await response.json().catch(() => ({}));
-                alert(errorData.message);
-            }
+            const data = await response.data;
+            alert("Успешная регистрация для " + data.nickname);
+            setView("login");
         } catch (error) {
-            alert ("Ошибка авторизации" + error);
+            alert ("Ошибка регистрации: " + error.response.data.message);
         } finally {
             setIsLoading(false);
         }
