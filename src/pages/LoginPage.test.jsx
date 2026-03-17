@@ -94,6 +94,7 @@ describe('LoginPage', () => {
     await waitFor(() => {
 
       expect(api.post).toHaveBeenCalledWith('/auth/signup', {
+        nickname: 'Hero',
         email: 'test@test.com',
         rawPassword: '123456'
       });
