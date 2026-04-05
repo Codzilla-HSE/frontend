@@ -5,8 +5,9 @@ import './LoginPage.css';
 import '../App.css';
 import '../api/axiosConfig.js';
 import api from "../api/axiosConfig.js";
+import {useUser} from "../context/UserContext.jsx";
 
-export default function LoginPage() {
+export function LoginPage() {
     const [view, setView] = useState('login');
 
     const [email, setEmail] = useState('');
@@ -14,7 +15,7 @@ export default function LoginPage() {
     const [nickname, setNickname] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-
+    const {login} = useUser();
     const handleResetToLogin = () => {
         setView('login');
     };
@@ -31,12 +32,22 @@ export default function LoginPage() {
             )
 
             const data = await response.data;
+
+            const responseIcon = await api.get(
+                '/user/icon-url'
+            )
+            const dataIcon = responseIcon.data;
+
+            data.iconUrl = dataIcon;
+
             alert("Успешный вход для пользователя " + data.nickname);
+            login(data);
             navigate("/battle");
 
 
         } catch (error) {
-            alert ("Ошибка авторизации: " + error.response.data.message);
+            console.log(error);
+            alert("Ошибка авторизации: " + error.response.data.message);
         } finally {
             setIsLoading(false);
         }
@@ -58,7 +69,7 @@ export default function LoginPage() {
             alert("Успешная регистрация для " + data.nickname);
             setView("login");
         } catch (error) {
-            alert ("Ошибка регистрации: " + error.response.data.message);
+            alert("Ошибка регистрации: " + error.response.data.message);
         } finally {
             setIsLoading(false);
         }

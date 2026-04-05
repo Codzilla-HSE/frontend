@@ -1,12 +1,13 @@
 import { useUser } from '../../../context/UserContext';
 import { User, Settings, Swords, LogIn } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import {useState} from "react";
 
 export default function Header({ onSettingsClick, onNavClick }) {
   const { user } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [imageError, setImageError] = useState(false);
   const handleGenericNav = () => {
     if (onNavClick) {
       onNavClick();
@@ -60,7 +61,24 @@ export default function Header({ onSettingsClick, onNavClick }) {
         {user ? (
           <div className="header-profile" title="Профиль пользователя" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
              <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{user.nickname}</span>
-             <User size={24} />
+            <span onClick={() => navigate('/profile')}>
+            {imageError || !user.iconUrl ? (
+                <div className="avatar-placeholder">
+                  <User size={20} />
+                </div>
+            ) : (
+                <img
+                    src={user.iconUrl}
+                    style={{
+                      width: '30px',
+                      height: '30px',
+                      borderRadius: '50%',
+                      objectFit: 'cover'
+                    }}
+                    onError={() => setImageError(true)}
+                />
+            )}
+              </span>
           </div>
         ) : (
           <button 
