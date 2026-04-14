@@ -3,6 +3,7 @@ import SettingsModal from './components/ui/SettingsModal';
 import { useState, useEffect } from 'react';
 import { PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useNavigate } from 'react-router-dom';
+import { useParcelPolling } from './useParcelPolling';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import LeftWorkspace from './components/workspace/LeftWorkspace';
@@ -15,6 +16,7 @@ function WorkspacePage() {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isSwapped, setIsSwapped] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const { submissions, hasError } = useParcelPolling();
 
   useEffect(() => {
     if (isDarkMode) {
@@ -36,7 +38,7 @@ function WorkspacePage() {
       <main className="workspace">
         <PanelGroup direction="horizontal">
           {isSwapped ? (
-            <RightWorkspace position="left" />
+            <RightWorkspace position="left" submissions={submissions} />
           ) : (
             <LeftWorkspace isDarkMode={isDarkMode} position="left" />
           )}
@@ -48,7 +50,7 @@ function WorkspacePage() {
           {isSwapped ? (
             <LeftWorkspace isDarkMode={isDarkMode} position="right" />
           ) : (
-            <RightWorkspace position="right" />
+            <RightWorkspace position="right" submissions={submissions} />
           )}
         </PanelGroup>
       </main>

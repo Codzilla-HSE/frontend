@@ -197,3 +197,65 @@
   display: block;
   flex-shrink: 0;
 }
+
+.tabs-header {
+  gap: 20px;
+  user-select: none;
+}
+
+.tab-button {
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.tab-button.active {
+  color: var(--text-primary);
+}
+
+.tab-button span {
+  font-weight: 600; 
+  font-size: 0.85rem;
+}
+
+.task-description h3 {
+  margin-top: 0;
+}
+
+.empty-submissions {
+  color: var(--text-secondary);
+}
+
+.submissions-list {
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px;
+}
+
+.submission-item {
+  padding: 10px; 
+  border-radius: 6px; 
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-color);
+}
+
+.submission-status {
+  font-weight: bold;
+}
+
+.submission-status.accepted {
+  color: #4CAF50;
+}
+
+.submission-status.rejected {
+  color: #f87171;
+}
+
+.submission-details {
+  font-size: 12px; 
+  color: var(--text-secondary); 
+  margin-top: 4px;
+}
