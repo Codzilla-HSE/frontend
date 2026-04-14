@@ -16,7 +16,7 @@ function WorkspacePage() {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isSwapped, setIsSwapped] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const { submissions, hasError } = useParcelPolling();
+  const { submissions } = useParcelPolling();
 
   useEffect(() => {
     if (isDarkMode) {
