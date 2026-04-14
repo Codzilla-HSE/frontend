@@ -4,7 +4,7 @@ import Header from './components/layout/Header';
 import './LoginPage.css';
 import '../App.css';
 import '../api/axiosConfig.js';
-import api from "../api/axiosConfig.js";
+import {api} from "../api/axiosConfig.js";
 
 export default function LoginPage() {
     const [view, setView] = useState('login');
