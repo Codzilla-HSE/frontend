@@ -16,7 +16,7 @@ const LANGUAGE_IDS = {
     javascript: 63,
 };
 
-export default function LeftWorkspace({isDarkMode, position = 'left', problemId = 6}) {
+export default function LeftWorkspace({isDarkMode, position = 'left', problemId = 2}) {
     const [language, setLanguage] = useState('python');
     const [code, setCode] = useState(DEFAULT_CODE);
     const [showResetModal, setShowResetModal] = useState(false);
@@ -65,7 +65,7 @@ export default function LeftWorkspace({isDarkMode, position = 'left', problemId 
                 '/problems/submit/file',
                 formData
             )
-            const submissionId = await response.data;
+            const submissionToken = await response.data;
             console.log(submissionId);
             setTestResults('Решение в очереди, ожидаем результат...');
 
