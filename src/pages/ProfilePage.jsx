@@ -32,8 +32,8 @@ export function ProfilePage() {
             user.nickname = nickname;
             setIsEditing(false);
             alert("Профиль обновлен!");
-        } catch (error) {
-            alert("Ошибка при обновлении");
+        } catch (err) {
+            alert("Ошибка при обновлении:" + err);
         }
     };
 
@@ -46,7 +46,7 @@ export function ProfilePage() {
 
         setIsUploading(true);
         try {
-            const response = await api.post('/user/upload-icon', formData, {
+            await api.post('/user/upload-icon', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
@@ -57,7 +57,7 @@ export function ProfilePage() {
 
             login({ ...user, iconUrl: dataIcon });
             setImageError(false);
-            alert("Аватар обновлен!");
+
         } catch (err) {
             alert("Ошибка загрузки: " + err.response?.data || err.message);
         } finally {
