@@ -2,8 +2,8 @@ import {render, screen, waitFor, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
-import LoginPage from './LoginPage';
-import {api} from '../api/axiosConfig';
+import {LoginPage} from './LoginPage';
+import api from '../api/axiosConfig';
 import * as UserContext from '../context/UserContext.jsx';
 
 
@@ -20,6 +20,7 @@ vi.mock('react-router-dom', async () => {
 vi.mock('../api/axiosConfig', () => ({
   default: {
     post: vi.fn(),
+    get: vi.fn()
   },
 }));
 
@@ -52,7 +53,10 @@ describe('LoginPage', () => {
   it('успешный логин вызывает API и перенаправляет на /battle', async () => {
     const user = userEvent.setup();
     api.post.mockResolvedValueOnce({ data: { nickname: 'Tester' } });
-
+    api.get.mockResolvedValue({
+      status: 200,
+      data: { url: 'http://example.com/icon.png' }
+    });
     renderComponent();
 
 
