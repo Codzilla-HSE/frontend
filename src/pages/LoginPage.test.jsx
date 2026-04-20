@@ -18,9 +18,15 @@ vi.mock('react-router-dom', async () => {
 
 
 vi.mock('../api/axiosConfig', () => ({
-  default: {
+  api: {
     post: vi.fn(),
+    get: vi.fn(),
+    put: vi.fn(),
+    delete: vi.fn(),
   },
+  multipartApi: {
+    post: vi.fn(),
+  }
 }));
 
 describe('LoginPage', () => {
