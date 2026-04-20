@@ -66,20 +66,7 @@ export default function LeftWorkspace({isDarkMode, position = 'left', problemId 
                 formData
             )
             const submissionToken = await response.data;
-            console.log(submissionId);
-            setTestResults('Решение в очереди, ожидаем результат...');
-
-            // const wsHost = window.location.hostname;
-            // const ws = new WebSocket(`ws://${wsHost}:8080/ws/results?submissionId=${submissionId}`);
-            // ws.onmessage = (event) => {
-            //   setTestResults(event.data);
-            //   setIsSubmitting(false);
-            //   ws.close();
-            // };
-            // ws.onerror = () => {
-            //   setTestResults('Ошибка WebSocket соединения');
-            //   setIsSubmitting(false);
-            // };
+            console.log(submissionToken);
         } catch (err) {
             setTestResults('Ошибка: ' + err.message);
             setIsSubmitting(false);
