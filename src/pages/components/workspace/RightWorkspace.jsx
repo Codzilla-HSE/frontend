@@ -3,10 +3,28 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { FileText, BarChart2, List } from 'lucide-react';
 import PanelHeader from '../ui/PanelHeader';
 
+const LANGUAGE_MAP = {
+  54: 'C++',
+  71: 'Python',
+  63: 'JavaScript'
+};
+
 export default function RightWorkspace({ position = 'right', submissions = [] }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [activeTab, setActiveTab] = useState('description');
   const panelRef = useRef(null);
+
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleString('ru-RU', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      day: '2-digit',
+      month: '2-digit'
+    });
+  };
 
   return (
     <Panel 
@@ -64,11 +82,11 @@ export default function RightWorkspace({ position = 'right', submissions = [] })
                     <div className="submissions-list">
                       {submissions.map((sub, index) => (
                         <div key={sub.id || index} className="submission-item">
-                          <div className={`submission-status ${sub.status === 'Accepted' ? 'accepted' : 'rejected'}`}>
-                            {sub.status || 'Pending...'}
+                          <div className={`submission-status ${sub.status === 'ACCEPTED' ? 'accepted' : 'rejected'}`}>
+                            {sub.status.replace(/_/g, ' ')}
                           </div>
                           <div className="submission-details">
-                            Язык: {sub.language || 'Неизвестно'} | Память: {sub.memory || '0'} MB
+                            ID: {sub.id} | Язык: {LANGUAGE_MAP[sub.languageId] || sub.languageId} | Время: {formatDate(sub.createdAt)}
                           </div>
                         </div>
                       ))}

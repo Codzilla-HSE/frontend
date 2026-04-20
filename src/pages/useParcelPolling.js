@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import api from '../api/axiosConfig'
 
 export const useParcelPolling = () => {
     const [submissions, setSubmissions] = useState([]);
     const [hasError, setHasError] = useState(false);
     const [isPolling, setIsPolling] = useState(true);
+    
+    const lastUpdateRef = useRef(null);
 
     useEffect(() => { 
         let isMounted = true;
@@ -16,19 +18,32 @@ export const useParcelPolling = () => {
             if (!isMounted || !isPolling) return;
 
             try {
-                const response = await api.get('/submissions', {
-                    signal: controller.signal
+                const params = {};
+                if (lastUpdateRef.current) {
+                    params.lastUpdate = lastUpdateRef.current;
+                }
+
+                const response = await api.get('/my-submissions', {
+                    signal: controller.signal,
+                    params: params,
+                    timeout: 25000
                 });
 
                 if (isMounted) {
-                    console.log('Backend response:', response.data);
-                    setSubmissions(response.data);
-                    setHasError(false);
-
-                    poll();
+                    if (response.status === 200) {
+                        setSubmissions(response.data);
+                        setHasError(false);
+                        
+                        if (response.data.length > 0) {
+                            const latest = response.data.reduce((max, sub) => 
+                                sub.updatedAt > max ? sub.updatedAt : max, response.data[0].updatedAt);
+                            lastUpdateRef.current = latest;
+                        }
+                    } 
+                    timeoutId = setTimeout(poll, 500);
                 }
             } catch (error) {
-                if (error.name == 'CanceledError' || error.message == 'canceled') {
+                if (error.name === 'CanceledError' || error.message === 'canceled') {
                     return;
                 }
                 
