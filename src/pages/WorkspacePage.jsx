@@ -40,7 +40,7 @@ function WorkspacePage() {
           {isSwapped ? (
             <RightWorkspace position="left" submissions={submissions} />
           ) : (
-            <LeftWorkspace isDarkMode={isDarkMode} position="left" />
+            <LeftWorkspace isDarkMode={isDarkMode} position="left" submissions = {submissions} />
           )}
           
           <PanelResizeHandle className="resizer-vertical">

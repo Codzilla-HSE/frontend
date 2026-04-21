@@ -6,6 +6,17 @@
   overflow: hidden;
 }
 
+.test-text {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+  margin: 0;
+}
+
+.success { color: #4caf50; }
+.muted { color: var(--text-secondary); font-style: italic; opacity: 0.8; }
+
 .action-bar {
   display: flex; 
   justify-content: space-between; 

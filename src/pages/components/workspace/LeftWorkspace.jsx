@@ -26,16 +26,18 @@ const idToLanguage = {
         63 : 'javascript'
 };
 
-export default function LeftWorkspace({isDarkMode, position = 'left', problemId = 2}) {
+export default function LeftWorkspace({isDarkMode, position = 'left', problemId = 2, submissions = []}) {
     const [languageId, setLanguageId] = useState(71);
     const [code, setCode] = useState(DEFAULT_CODE);
     const [showResetModal, setShowResetModal] = useState(false);
-    const [testResults, setTestResults] = useState(null);
+    // const [testResults, setTestResults] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const panelRef = useRef(null);
     const fileInputRef = useRef(null);
     const codeContainerRef = useRef(null);
+
+    const testResults = submissions.length > 0 ? submissions[0].resultDetails : null;
 
     const handleFileImport = (e) => {
         const file = e.target.files[0];
@@ -61,7 +63,7 @@ export default function LeftWorkspace({isDarkMode, position = 'left', problemId 
 
     const handleSubmit = async () => {
         setIsSubmitting(true);
-        setTestResults('Отправка решения...');
+        // setTestResults('Отправка решения...');
         try {
             const blob = new Blob([code], {type: 'text/plain'});
             const file = new File([blob], 'solution.py');
@@ -79,7 +81,8 @@ export default function LeftWorkspace({isDarkMode, position = 'left', problemId 
             console.log(submissionToken);
             setIsSubmitting(false);
         } catch (err) {
-            setTestResults('Ошибка: ' + err.message);
+            // setTestResults('Ошибка: ' + err.message);
+            console.log(err);
             setIsSubmitting(false);
         }
     };
@@ -174,14 +177,14 @@ export default function LeftWorkspace({isDarkMode, position = 'left', problemId 
                         <PanelHeader title="Результаты тестов" Icon={Terminal}/>
                         <div className="panel-content">
                             {testResults ? (
-                                <pre style={{
-                                    color: testResults.includes('Accepted') ? '#4caf50' : 'var(--text-primary)',
-                                    whiteSpace: 'pre-wrap'
-                                }}>
-                  {testResults}
-                </pre>
+                                <pre
+                                    className={`test-text ${testResults.includes('Accepted') ? 'success' : ''}`}
+                                    style={{ whiteSpace: 'pre-wrap' }}
+                                >
+            {testResults}
+        </pre>
                             ) : (
-                                <p style={{color: 'var(--text-secondary)', fontStyle: 'italic'}}>
+                                <p className="test-text muted">
                                     Здесь будут результаты запуска...
                                 </p>
                             )}
