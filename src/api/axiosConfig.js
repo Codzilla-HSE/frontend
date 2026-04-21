@@ -5,6 +5,7 @@ const BASE_URL = 'http://localhost:8080';
 const commonConfig = {
     baseURL: BASE_URL,
     withCredentials: true,
+  validateStatus: (status) => (status >= 200 && status < 300) || status === 304
 };
 
 const attachInterceptors = (instance) => {
