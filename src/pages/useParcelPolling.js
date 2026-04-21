@@ -4,18 +4,17 @@ import api from '../api/axiosConfig'
 export const useParcelPolling = () => {
     const [submissions, setSubmissions] = useState([]);
     const [hasError, setHasError] = useState(false);
-    const [isPolling, setIsPolling] = useState(true);
-    
+    const isMountedRef = useRef(true);
     const lastUpdateRef = useRef(null);
 
-    useEffect(() => { 
-        let isMounted = true;
+    useEffect(() => {
+        isMountedRef.current = true;
         let timeoutId = null;
 
-        const controller = new AbortController();
-
         const poll = async () => {
-            if (!isMounted || !isPolling) return;
+            if (!isMountedRef.current) return;
+
+            const controller = new AbortController();
 
             try {
                 const params = {};
@@ -25,30 +24,38 @@ export const useParcelPolling = () => {
 
                 const response = await api.get('/my-submissions', {
                     signal: controller.signal,
-                    params: params,
+                    params,
                     timeout: 25000
                 });
+		
+		console.log('[poll] response status:', response.status, '| lastUpdate was:', params.lastUpdate, '| now set to:', lastUpdateRef.current);
+		
+                if (!isMountedRef.current) return;
 
-                if (isMounted) {
-                    if (response.status === 200) {
-                        setSubmissions(response.data);
-                        setHasError(false);
-                        
-                        if (response.data.length > 0) {
-                            const latest = response.data.reduce((max, sub) => 
-                                sub.updatedAt > max ? sub.updatedAt : max, response.data[0].updatedAt);
-                            lastUpdateRef.current = latest;
-                        }
-                    } 
-                    timeoutId = setTimeout(poll, 500);
+                if (response.status === 200) {
+		    setSubmissions(response.data);
+		    setHasError(false);
+
+		    if (response.data.length > 0) {
+			const latest = response.data.reduce((max, sub) =>
+			    sub.updatedAt > max ? sub.updatedAt : max,
+			    response.data[0].updatedAt
+			);
+			lastUpdateRef.current = latest.endsWith('Z') ? latest : latest + 'Z';
+		    } else if (!lastUpdateRef.current) {
+			lastUpdateRef.current = new Date().toISOString();
+		    }
+		}
+
+                if (isMountedRef.current) {
+                    poll();
                 }
+
             } catch (error) {
-                if (error.name === 'CanceledError' || error.message === 'canceled') {
-                    return;
-                }
-                
-                if (isMounted) {
-                    console.error('Error while getting submissions list:', error);
+                if (error.name === 'CanceledError' || error.code === 'ERR_CANCELED') return;
+
+                if (isMountedRef.current) {
+                    console.error('Polling error:', error);
                     setHasError(true);
                     timeoutId = setTimeout(poll, 3000);
                 }
@@ -58,11 +65,10 @@ export const useParcelPolling = () => {
         poll();
 
         return () => {
-            isMounted = false;
-            controller.abort();
+            isMountedRef.current = false;
             if (timeoutId) clearTimeout(timeoutId);
         };
-    }, [isPolling]);
+    }, []);
 
-    return { submissions, hasError, setIsPolling };
+    return { submissions, hasError };
 };

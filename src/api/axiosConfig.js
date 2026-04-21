@@ -3,9 +3,8 @@ import axios from 'axios';
 const api = axios.create({
     baseURL: '',
     withCredentials: true,
-    headers: {
-        'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
+    validateStatus: (status) => (status >= 200 && status < 300) || status === 304
 });
 
 
