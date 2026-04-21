@@ -28,7 +28,6 @@ export const useParcelPolling = () => {
                     timeout: 25000
                 });
 		
-		console.log('[poll] response status:', response.status, '| lastUpdate was:', params.lastUpdate, '| now set to:', lastUpdateRef.current);
 		
                 if (!isMountedRef.current) return;
 
