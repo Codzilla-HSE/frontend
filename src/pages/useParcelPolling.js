@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import api from '../api/axiosConfig'
+import {api} from '../api/axiosConfig'
 
 export const useParcelPolling = () => {
     const [submissions, setSubmissions] = useState([]);

@@ -77,6 +77,7 @@ export default function LeftWorkspace({isDarkMode, position = 'left', problemId 
             )
             const submissionToken = await response.data;
             console.log(submissionToken);
+            setIsSubmitting(false);
         } catch (err) {
             setTestResults('Ошибка: ' + err.message);
             setIsSubmitting(false);
