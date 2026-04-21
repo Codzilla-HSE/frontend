@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
 import LoginPage from './LoginPage';
-import api from '../api/axiosConfig';
+import {api} from '../api/axiosConfig';
 import * as UserContext from '../context/UserContext.jsx';
 
 
@@ -18,9 +18,15 @@ vi.mock('react-router-dom', async () => {
 
 
 vi.mock('../api/axiosConfig', () => ({
-  default: {
+  api: {
     post: vi.fn(),
+    get: vi.fn(),
+    put: vi.fn(),
+    delete: vi.fn(),
   },
+  multipartApi: {
+    post: vi.fn(),
+  }
 }));
 
 describe('LoginPage', () => {

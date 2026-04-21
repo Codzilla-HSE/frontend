@@ -1,9 +1,14 @@
 import { Play } from 'lucide-react';
 
-export function SubmitButton() {
+export function SubmitButton({ onClick, disabled }) {
   return (
-    <button className="btn btn-submit" title="Отправить решение на проверку">
-      Submit
+    <button
+      className="btn btn-submit"
+      title="Отправить решение на проверку"
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {disabled ? 'Отправка...' : 'Submit'}
     </button>
   );
 }
