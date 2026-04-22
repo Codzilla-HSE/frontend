@@ -34,7 +34,6 @@ export default function LoginPage() {
             alert("Успешный вход для пользователя " + data.nickname);
             navigate("/battle");
 
-
         } catch (error) {
             alert ("Ошибка авторизации: " + error.response.data.message);
         } finally {
