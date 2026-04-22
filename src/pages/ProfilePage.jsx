@@ -8,6 +8,7 @@ import './ProfilePage.css';
 import {User, UserIcon} from "lucide-react";
 import api from "../api/axiosConfig.js";
 
+
 export function ProfilePage() {
     const { user, logout, login } = useUser();
     const navigate = useNavigate();
