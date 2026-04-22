@@ -58,6 +58,7 @@ export default function Header({ onSettingsClick, onNavClick }) {
         </div>
         
         {user ? (
+
           <div className="header-profile" title="Профиль пользователя" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
              <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{user.nickname}</span>
              <User size={24} />
