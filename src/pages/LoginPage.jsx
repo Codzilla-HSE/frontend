@@ -44,7 +44,6 @@ export function LoginPage() {
             login(data);
             navigate("/battle");
 
-
         } catch (error) {
             console.log(error);
             alert("Ошибка авторизации: " + error.response.data.message);
