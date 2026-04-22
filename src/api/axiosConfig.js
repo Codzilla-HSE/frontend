@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {useUser} from "../context/UserContext.jsx";
 
 const BASE_URL = 'http://localhost:8080';
 
@@ -8,10 +9,13 @@ const commonConfig = {
   validateStatus: (status) => (status >= 200 && status < 300) || status === 304
 };
 
+
+
 const attachInterceptors = (instance) => {
     instance.interceptors.response.use(
         (response) => response,
         async (error) => {
+            const {logout} = useUser();
             const originalRequest = error.config;
             if (error.response?.status === 401 && !originalRequest._retry) {
                 originalRequest._retry = true;
@@ -19,6 +23,7 @@ const attachInterceptors = (instance) => {
                     await axios.post(`${BASE_URL}/auth/refresh`, {}, { withCredentials: true });
                     return instance(originalRequest);
                 } catch (refreshError) {
+                    logout();
                     window.location.href = '/login';
                     return Promise.reject(refreshError);
                 }

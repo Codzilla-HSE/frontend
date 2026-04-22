@@ -58,7 +58,10 @@ describe('LoginPage', () => {
   it('успешный логин вызывает API и перенаправляет на /battle', async () => {
     const user = userEvent.setup();
     api.post.mockResolvedValueOnce({ data: { nickname: 'Tester' } });
-
+    api.get.mockResolvedValue({
+      status: 200,
+      data: { url: 'http://example.com/icon.png' }
+    });
     renderComponent();
 
 

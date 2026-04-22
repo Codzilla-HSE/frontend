@@ -2,11 +2,11 @@ import {useRef, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './components/layout/Header';
 import { useUser } from "../context/UserContext.jsx";
-// import api from "../api/axiosConfig.js";
+
 import './LoginPage.css';
 import './ProfilePage.css';
 import {User, UserIcon} from "lucide-react";
-import api from "../api/axiosConfig.js";
+import {api} from "../api/axiosConfig.js";
 
 
 export function ProfilePage() {

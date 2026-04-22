@@ -5,15 +5,19 @@ import './LoginPage.css';
 import '../App.css';
 import '../api/axiosConfig.js';
 import {api} from "../api/axiosConfig.js";
+import {useUser} from "../context/UserContext.jsx";
+
+
 
 export default function LoginPage() {
     const [view, setView] = useState('login');
-
+const {login} = useUser();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [nickname, setNickname] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+
 
     const handleResetToLogin = () => {
         setView('login');
@@ -31,6 +35,15 @@ export default function LoginPage() {
             )
 
             const data = await response.data;
+
+            const responseIcon = await api.get(
+                '/user/icon-url'
+            )
+            const dataIcon = responseIcon.data;
+
+            data.iconUrl = dataIcon;
+
+            login(data);
             alert("Успешный вход для пользователя " + data.nickname);
             navigate("/battle");
 
