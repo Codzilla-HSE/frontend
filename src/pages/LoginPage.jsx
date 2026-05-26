@@ -6,12 +6,13 @@ import '../App.css';
 import '../api/axiosConfig.js';
 import {api} from "../api/axiosConfig.js";
 import {useUser} from "../context/UserContext.jsx";
+import toast from "react-hot-toast";
 
 
 
 export default function LoginPage() {
     const [view, setView] = useState('login');
-const {login} = useUser();
+    const {login} = useUser();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [nickname, setNickname] = useState('');
@@ -35,7 +36,7 @@ const {login} = useUser();
             )
 
             const data = await response.data;
-
+            data.email = email;
             const responseIcon = await api.get(
                 '/user/icon-url'
             )
@@ -44,11 +45,10 @@ const {login} = useUser();
             data.iconUrl = dataIcon;
 
             login(data);
-            alert("Успешный вход для пользователя " + data.nickname);
             navigate("/battle");
 
         } catch (error) {
-            alert ("Ошибка авторизации: " + error.response.data.message);
+            toast.error("Ошибка авторизации: " + error.response.data.message);
         } finally {
             setIsLoading(false);
         }
@@ -99,7 +99,7 @@ const {login} = useUser();
 
                     {view === 'login' && (
                         <>
-                            <h2>Вход в CodeZilla</h2>
+                            <h2>Вход в CodZilla</h2>
                             <form onSubmit={handleLogin} className="login-form">
                                 <input
                                     type="email" placeholder="Email" value={email}

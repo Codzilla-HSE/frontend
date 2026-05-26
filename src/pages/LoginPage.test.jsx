@@ -51,8 +51,8 @@ describe('LoginPage', () => {
     expect(screen.getByRole('heading', { name: 'Регистрация' })).toBeInTheDocument();
 
 
-    await user.click(screen.getByText('CodeZilla'));
-    expect(screen.getByRole('heading', { name: 'Вход в CodeZilla' })).toBeInTheDocument();
+    await user.click(screen.getByText('CodZilla'));
+    expect(screen.getByRole('heading', { name: 'Вход в CodZilla' })).toBeInTheDocument();
   });
 
   it('успешный логин вызывает API и перенаправляет на /battle', async () => {
@@ -65,7 +65,7 @@ describe('LoginPage', () => {
     renderComponent();
 
 
-    const loginForm = screen.getByRole('heading', { name: /Вход в CodeZilla/i }).closest('.glass-panel');
+    const loginForm = screen.getByRole('heading', { name: /Вход в CodZilla/i }).closest('.glass-panel');
 
 
     const emailInput = within(loginForm).getByPlaceholderText('Email');
@@ -110,7 +110,7 @@ describe('LoginPage', () => {
 
       expect(window.alert).toHaveBeenCalledWith(expect.stringContaining("Успешная регистрация для Hero"));
 
-      expect(screen.getByRole('heading', { name: 'Вход в CodeZilla' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Вход в CodZilla' })).toBeInTheDocument();
     });
   });
 
@@ -124,7 +124,7 @@ describe('LoginPage', () => {
     renderComponent();
 
 
-    const loginPanel = screen.getByRole('heading', { name: /Вход в CodeZilla/i }).closest('.glass-panel');
+    const loginPanel = screen.getByRole('heading', { name: /Вход в CodZilla/i }).closest('.glass-panel');
     const form = within(loginPanel);
 
     await user.type(form.getByPlaceholderText('Email'), 'test@test.com');
