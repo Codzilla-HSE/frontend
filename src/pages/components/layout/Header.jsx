@@ -44,7 +44,7 @@ export default function Header({ onSettingsClick, onNavClick }) {
     <header className="page-header">
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <div className="header-logo" onClick={handleGenericNav} style={{ cursor: 'pointer' }}>
-          <h2>CodeZilla</h2>
+          <h2>CodZilla</h2>
         </div>
         <nav className="header-nav">
           <span onClick={handleGenericNav} style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>

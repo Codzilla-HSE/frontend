@@ -50,7 +50,7 @@ describe('WorkspacePage', () => {
     
     renderComponent();
 
-    await user.click(screen.getByText('CodeZilla'));
+    await user.click(screen.getByText('CodZilla'));
 
     expect(confirmMock).toHaveBeenCalledWith('Вы точно хотите покинуть битву? Ваш прогресс может быть потерян.');
     expect(mockNavigate).toHaveBeenCalledWith('/battle');

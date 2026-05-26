@@ -7,12 +7,15 @@ import SettingsModal from './components/ui/SettingsModal';
 import './BattlePage.css';
 import '../api/axiosConfig.js'
 
-
+if (typeof global === 'undefined') {
+    window.global = window;
+}
 
 export default function BattlePage() {
   const navigate = useNavigate();
   const { logout } = useUser();
   const [showSettings, setShowSettings] = useState(false);
+
 
   const handleLogout = () => {
     logout();
@@ -24,7 +27,7 @@ export default function BattlePage() {
       <Header onSettingsClick={() => setShowSettings(true)} />
       
       <main className="battle-main">
-        <h1 className="battle-title">Арена CodeZilla</h1>
+        <h1 className="battle-title">Арена CodZilla</h1>
         <p className="battle-subtitle">
           Выбери задачу, напиши оптимальный код и разгроми соперника
         </p>
