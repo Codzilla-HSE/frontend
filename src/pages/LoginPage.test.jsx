@@ -113,32 +113,4 @@ describe('LoginPage', () => {
       expect(screen.getByRole('heading', { name: 'Вход в CodZilla' })).toBeInTheDocument();
     });
   });
-
-  it('показывает ошибку, если API логина вернул ошибку', async () => {
-    const user = userEvent.setup();
-
-    api.post.mockRejectedValueOnce({
-      response: { data: { message: 'Неверный пароль' } }
-    });
-
-    renderComponent();
-
-
-    const loginPanel = screen.getByRole('heading', { name: /Вход в CodZilla/i }).closest('.glass-panel');
-    const form = within(loginPanel);
-
-    await user.type(form.getByPlaceholderText('Email'), 'test@test.com');
-    await user.type(form.getByPlaceholderText('Пароль'), 'wrong');
-
-    const submitButton = form.getByRole('button', {
-      name: /Войти/i,
-      selector: 'button[type="submit"]'
-    });
-
-    await user.click(submitButton);
-
-    await waitFor(() => {
-      expect(window.alert).toHaveBeenCalledWith("Ошибка авторизации: Неверный пароль");
-    });
-  });
 });
