@@ -4,7 +4,7 @@ import {useMatchStore} from "./useMatchStore.js";
 import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
 
-export const useMatchSession = (matchId) => {
+const useMatchSession = (matchId) => {
     const {isConnected, publish} = useWebSocket();
     const navigate = useNavigate();
     const draftSessionDTO = useMatchStore((state) => state.draftSessionDTO);
@@ -14,6 +14,7 @@ export const useMatchSession = (matchId) => {
 
     const [sessionData, setSessionData] = useState(null);
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSessionData(draftSessionDTO?.draftSession);
     }, [draftSessionDTO]);
 
@@ -36,3 +37,4 @@ export const useMatchSession = (matchId) => {
 
     return {sessionData, error, sendBan, isConnected};
 };
+export default useMatchSession
