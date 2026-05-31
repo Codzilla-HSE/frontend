@@ -1,0 +1,171 @@
+
+.draft-container {
+    font-family: var(--font-ui), system-ui, sans-serif;
+    background-color: var(--bg-main);
+    min-height: 100vh;
+    padding: 20px;
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+}
+
+.draft-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+.draft-title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.draft-turn-indicator {
+    padding: 8px 20px;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.25s ease;
+}
+
+.draft-main {
+    flex-grow: 1;
+}
+
+.draft-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.draft-category-card {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    transition: all 0.2s ease-in-out;
+    opacity: 0.5;
+}
+
+.draft-category-card.active {
+    opacity: 1;
+    border-color: var(--accent-color, #ff5252);
+    box-shadow: 0 0 15px rgba(211, 47, 47, 0.15);
+    transform: scale(1.01);
+}
+
+.draft-category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.draft-category-title {
+    margin: 0;
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.draft-category-card.active .draft-category-title {
+    color: var(--text-primary);
+}
+
+.draft-active-badge {
+    background-color: rgba(248, 113, 113, 0.1);
+    color: #f87171;
+    border: 1px solid rgba(248, 113, 113, 0.2);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.draft-options-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Кнопка бана: теперь она темная, аккуратная, в стиле UI вашей платформы */
+.draft-ban-btn {
+    padding: 10px 22px;
+    background: #1e1e24; /* Темный фон в тон панелей */
+    color: var(--text-primary, #fff);
+    font-family: var(--font-ui), sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid var(--border-color, #333);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Эффект при наведении на ДОСТУПНУЮ для бана кнопку */
+.draft-ban-btn:hover:not(:disabled) {
+    background: #2a1b1b; /* Слегка красноватый темный фон */
+    border-color: #ef4444; /* Яркий красный бордер */
+    color: #ef4444;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.35); /* Красное неоновое свечение */
+    transform: translateY(-1px);
+}
+
+.draft-ban-btn:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+/* Опция УЖЕ забанена (перечеркнутая) */
+.draft-ban-btn.banned {
+    background: #141416;
+    color: #475569; /* Тусклый серо-синий цвет */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    text-decoration: line-through;
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Опция отключена, потому что категория еще не активна */
+.draft-ban-btn:disabled:not(.banned):not(.selected-winner) {
+    background: #141416;
+    color: #334155;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* ФИНАЛЬНАЯ ВЫБРАННАЯ ОПЦИЯ (Зеленый неон) */
+.draft-ban-btn.selected-winner {
+    background: #1b2e20; /* Темно-зеленый глубокий фон */
+    color: #4caf50;      /* Яркий зеленый текст */
+    border: 1px solid #4caf50; /* Четкая зеленая рамка */
+    opacity: 1 !important; /* Отменяем любую прозрачность карточки */
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.4); /* Плотное зеленое свечение */
+    font-weight: 800;
+    cursor: default;
+    pointer-events: none; /* Чтобы не срабатывали hover-эффекты */
+}
+
+.draft-footer {
+    margin-top: 40px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
