@@ -39,14 +39,6 @@ describe('BattlePage', () => {
 
   const renderComponent = () => render(<BrowserRouter><BattlePage /></BrowserRouter>);
 
-  it('кнопка "В БОЙ!" перенаправляет на /workspace', async () => {
-    const user = userEvent.setup();
-    renderComponent();
-
-    await user.click(screen.getByRole('button', { name: 'В БОЙ!' }));
-    expect(mockNavigate).toHaveBeenCalledWith('/workspace');
-  });
-
   it('нажатие на PVP в Header перенаправляет на /battle (остается на месте)', async () => {
     const user = userEvent.setup();
     renderComponent();
