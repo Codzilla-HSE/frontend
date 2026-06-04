@@ -1,5 +1,5 @@
 import { useUser } from '../../../context/UserContext';
-import { User, Settings, Swords, LogIn } from 'lucide-react';
+import { User, Settings, Swords, LogIn, Trophy } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {useState} from "react";
 
@@ -48,7 +48,10 @@ export default function Header({ onSettingsClick, onNavClick }) {
         </div>
         <nav className="header-nav">
           <span onClick={handleGenericNav} style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
-            <Swords size={18} /> PVP
+              <Swords size={18} /> PVP
+          </span>
+                <span onClick={() => { if (user) navigate('/leaderboard'); else navigate('/login'); }} style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
+              <Trophy size={18} /> Рейтинг
           </span>
         </nav>
       </div>
