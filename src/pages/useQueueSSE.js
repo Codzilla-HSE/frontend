@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { api } from '../api/axiosConfig';
 
 const BASE_URL = 'http://localhost:8080';
+const MAX_RETRIES = 5;
 
 export const useQueueSSE = () => {
     const navigate = useNavigate();
@@ -15,6 +16,9 @@ export const useQueueSSE = () => {
     const esRef          = useRef(null);
     const timerRef       = useRef(null);
     const waitSecondsRef = useRef(0);
+    const retryRef       = useRef(0);
+    const reconnectRef   = useRef(null);
+    const wantOpenRef    = useRef(false);
 
     const startTimer = useCallback((initialSeconds = 0) => {
         waitSecondsRef.current = initialSeconds;
@@ -31,12 +35,35 @@ export const useQueueSSE = () => {
         timerRef.current = null;
     }, []);
 
+    const closeSSE = useCallback(() => {
+        wantOpenRef.current = false;
+        clearTimeout(reconnectRef.current);
+        reconnectRef.current = null;
+        retryRef.current = 0;
+        if (esRef.current) {
+            esRef.current.close();
+            esRef.current = null;
+        }
+    }, []);
+
     const openSSE = useCallback(() => {
-        if (esRef.current) return;
+        wantOpenRef.current = true;
+
+        if (esRef.current && esRef.current.readyState !== EventSource.CLOSED) {
+            return;
+        }
+        if (esRef.current) {
+            esRef.current.close();
+            esRef.current = null;
+        }
 
         const es = new EventSource(`${BASE_URL}/matchmaking/queue/stream`, {
             withCredentials: true,
         });
+
+        es.onopen = () => {
+            retryRef.current = 0;
+        };
 
         es.addEventListener('queue-size', (e) => {
             setQueueSize(Number(e.data));
@@ -51,17 +78,29 @@ export const useQueueSSE = () => {
         });
 
         es.onerror = () => {
+            if (es.readyState === EventSource.CLOSED) {
+                esRef.current = null;
+
+                if (!wantOpenRef.current) return;
+
+                if (retryRef.current >= MAX_RETRIES) {
+                    console.error('[Queue] SSE: исчерпаны попытки переподключения');
+                    return;
+                }
+
+                const delay = Math.min(1000 * 2 ** retryRef.current, 10000);
+                retryRef.current += 1;
+                console.warn(`[Queue] SSE потеряно, переподключение через ${delay}ms (попытка ${retryRef.current})`);
+
+                clearTimeout(reconnectRef.current);
+                reconnectRef.current = setTimeout(() => {
+                    openSSE();
+                }, delay);
+            }
         };
 
         esRef.current = es;
-    }, [navigate, stopTimer]);
-
-    const closeSSE = useCallback(() => {
-        if (esRef.current) {
-            esRef.current.close();
-            esRef.current = null;
-        }
-    }, []);
+    }, [navigate, stopTimer, closeSSE]);
 
     const enterQueue = useCallback(async () => {
         setIsConnecting(true);
