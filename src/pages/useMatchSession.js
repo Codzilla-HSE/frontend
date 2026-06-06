@@ -4,7 +4,7 @@ import {useMatchStore} from "./useMatchStore.js";
 import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
 
-const useMatchSession = (matchId) => {
+export const useMatchSession = (matchId) => {
     const {isConnected, publish} = useWebSocket();
     const navigate = useNavigate();
     const draftSessionDTO = useMatchStore((state) => state.draftSessionDTO);
@@ -37,4 +37,3 @@ const useMatchSession = (matchId) => {
 
     return {sessionData, error, sendBan, isConnected};
 };
-export default useMatchSession
