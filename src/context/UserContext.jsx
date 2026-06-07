@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from 'react';
+import {api} from "../api/axiosConfig.js";
 
 const UserContext = createContext();
 
@@ -10,6 +11,7 @@ export function UserProvider({ children }) {
   };
 
   const logout = () => {
+    api.post("auth/logout");
     setUser(null);
   };
 
