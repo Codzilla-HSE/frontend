@@ -1,24 +1,28 @@
-import { createContext, useContext, useState } from 'react';
-import {api} from "../api/axiosConfig.js";
+import { createContext, useContext, useState, useEffect } from 'react';
+import { api } from '../api/axiosConfig';
 
 const UserContext = createContext();
 
 export function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
-  
-  const login = (userData) => {
-    setUser(userData);
-  };
+  const [user, setUser]       = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const logout = () => {
-    api.post("auth/logout");
-    setUser(null);
-  };
+  useEffect(() => {
+    api.get('/auth/me')
+        .then(res => setUser(res.data))
+        .catch(() => setUser(null))
+        .finally(() => setLoading(false));
+  }, []);
+
+  const login  = (userData) => setUser(userData);
+  const logout = () => setUser(null);
+
+  if (loading) return null;
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
-      {children}
-    </UserContext.Provider>
+      <UserContext.Provider value={{ user, login, logout }}>
+        {children}
+      </UserContext.Provider>
   );
 }
 

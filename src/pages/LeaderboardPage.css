@@ -1,0 +1,150 @@
+.lb-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px 60px;
+    background: radial-gradient(circle at center, #1a1a2e 0%, var(--bg-main) 100%);
+    color: var(--text-primary);
+}
+
+.lb-title {
+    margin-bottom: 6px;
+    font-family: var(--font-ui);
+    font-size: 2.5rem;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.lb-subtitle {
+    margin-bottom: 40px;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.lb-loading,
+.lb-empty {
+    margin-top: 40px;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.lb-board {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.lb-header-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 100px;
+    align-items: center;
+    padding: 4px 20px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.lb-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 100px;
+    align-items: center;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.lb-row:hover {
+    background: rgba(255, 255, 255, 0.07);
+    transform: translateX(2px);
+}
+
+.lb-rank {
+    font-family: var(--font-ui);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.lb-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.lb-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
+}
+
+.lb-nickname {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.lb-you-badge {
+    padding: 2px 8px;
+    background: var(--accent-color, #646cff);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.lb-rating {
+    text-align: right;
+    font-family: var(--font-ui);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--accent-color, #646cff);
+}
+
+/* Подсветка своей строки */
+.lb-row--me {
+    background: rgba(100, 108, 255, 0.15);
+    border-color: var(--accent-color, #646cff);
+    box-shadow: 0 0 16px rgba(100, 108, 255, 0.25);
+}
+
+/* Топ-3 — кубковые акценты */
+.lb-row--top1 {
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.18) 0%, rgba(255, 255, 255, 0.04) 60%);
+    border-color: rgba(255, 215, 0, 0.5);
+}
+
+.lb-row--top2 {
+    background: linear-gradient(90deg, rgba(192, 192, 192, 0.18) 0%, rgba(255, 255, 255, 0.04) 60%);
+    border-color: rgba(192, 192, 192, 0.5);
+}
+
+.lb-row--top3 {
+    background: linear-gradient(90deg, rgba(205, 127, 50, 0.18) 0%, rgba(255, 255, 255, 0.04) 60%);
+    border-color: rgba(205, 127, 50, 0.5);
+}
+
+.lb-row--top1 .lb-rank,
+.lb-row--top2 .lb-rank,
+.lb-row--top3 .lb-rank {
+    font-size: 1.5rem;
+}
+
+.lb-divider {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    letter-spacing: 4px;
+    padding: 4px 0;
+    user-select: none;
+}

@@ -1,6 +1,7 @@
 import {BrowserRouter as Router, Routes, Route, Navigate, useParams, Outlet} from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import BattlePage from './pages/BattlePage';
+import LeaderboardPage from './pages/LeaderboardPage';
 import WorkspacePage from './pages/WorkspacePage';
 import './App.css';
 import {ProfilePage} from "./pages/ProfilePage.jsx";
@@ -44,6 +45,7 @@ function App() {
                         <Route path="/login" element={<LoginPage/>}/>
                         <Route path="/profile" element={<ProfilePage/>}/>
                         <Route path="/battle" element={<BattlePage/>}/>
+                        <Route path="/leaderboard" element={<LeaderboardPage/>}/>
                         <Route path="/match/:matchId" element={<MatchLayout/>}>
                             <Route path="workspace" element={<WorkspacePage/>}/>
                             <Route path="draft" element={<DraftPage/>}/>
