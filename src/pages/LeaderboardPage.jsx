@@ -1,3 +1,4 @@
+import defaultAvatar from '../../public/default-avatar.png';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
@@ -22,7 +23,11 @@ function LeaderboardRow({ entry }) {
                     className="lb-avatar"
                     src={entry.avatarUrl}
                     alt={entry.nickname}
-                    onError={(e) => { e.currentTarget.src = '/default-avatar.png'; }}
+                    onError={(e) => {
+                        if (e.currentTarget.dataset.fallback) return;
+                        e.currentTarget.dataset.fallback = '1';
+                        e.currentTarget.src = defaultAvatar;
+                    }}
                 />
                 <span className="lb-nickname">{entry.nickname}</span>
                 {entry.isCurrentUser && <span className="lb-you-badge">вы</span>}
