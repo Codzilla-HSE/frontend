@@ -14,6 +14,7 @@ export const useMatchSession = (matchId) => {
 
     const [sessionData, setSessionData] = useState(null);
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSessionData(draftSessionDTO?.draftSession);
     }, [draftSessionDTO]);
 

@@ -10,24 +10,24 @@ import {multipartApi} from "../../../api/axiosConfig.js";
 
 const DEFAULT_CODE = "# Напишите ваш код здесь...\n";
 
-const languages = [
+// const languages = [
+//
+//     { id: 71, name: "Python" },
+//
+//     { id: 54, name: "C++" },
+//
+//     { id: 63, name: "JavaScript" }
+//
+// ];
+//
+// const idToLanguage = {
+//         71 : 'python',
+//         54 : 'cpp',
+//         63 : 'javascript'
+// };
 
-    { id: 71, name: "Python" },
-
-    { id: 54, name: "C++" },
-
-    { id: 63, name: "JavaScript" }
-
-];
-
-const idToLanguage = {
-        71 : 'python',
-        54 : 'cpp',
-        63 : 'javascript'
-};
-
-export default function LeftWorkspace({isDarkMode, position = 'left', problemId = 2, submissions = []}) {
-    const [languageId, setLanguageId] = useState(71);
+export default function LeftWorkspace({isDarkMode, position = 'left', matchId, submissions = []}) {
+    // const [languageId, setLanguageId] = useState(71);
     const [code, setCode] = useState(DEFAULT_CODE);
     const [showResetModal, setShowResetModal] = useState(false);
     // const [testResults, setTestResults] = useState(null);
@@ -68,8 +68,7 @@ export default function LeftWorkspace({isDarkMode, position = 'left', problemId 
             const blob = new Blob([code], {type: 'text/plain'});
             const file = new File([blob], 'solution.py');
             const formData = new FormData();
-            formData.append('problemId', problemId);
-            formData.append('languageId', languageId);
+            formData.append('matchId', matchId);
             formData.append('file', file);
 
 
@@ -126,17 +125,17 @@ export default function LeftWorkspace({isDarkMode, position = 'left', problemId 
                                     <RunButton/>
                                     <SubmitButton onClick={handleSubmit} disabled={isSubmitting}/>
                                     <Timer/>
-                                    <select
-                                        className="language-select"
-                                        value={languageId}
-                                        onChange={(e) => setLanguageId(e.target.value)}
-                                    >
-                                        {languages.map((lang) => (
-                                            <option key={lang.id} value={lang.id}>
-                                                {lang.name}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    {/*<select*/}
+                                    {/*    className="language-select"*/}
+                                    {/*    value={languageId}*/}
+                                    {/*    onChange={(e) => setLanguageId(e.target.value)}*/}
+                                    {/*>*/}
+                                    {/*    {languages.map((lang) => (*/}
+                                    {/*        <option key={lang.id} value={lang.id}>*/}
+                                    {/*            {lang.name}*/}
+                                    {/*        </option>*/}
+                                    {/*    ))}*/}
+                                    {/*</select>*/}
                                     <button className="btn icon-btn" onClick={() => setShowResetModal(true)}
                                             title="Сбросить код">
                                         <RotateCcw size={16}/>
@@ -157,7 +156,6 @@ export default function LeftWorkspace({isDarkMode, position = 'left', problemId 
                                 <Editor
                                     height="100%"
                                     theme={isDarkMode ? "vs-dark" : "light"}
-                                    language={idToLanguage[languageId]}
                                     value={code}
                                     onChange={(value) => setCode(value)}
                                     options={{

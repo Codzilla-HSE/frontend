@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import {api} from '../api/axiosConfig'
 
-export const useParcelPolling = () => {
+export const useParcelPolling = (matchId) => {
     const [submissions, setSubmissions] = useState([]);
     const [hasError, setHasError] = useState(false);
     const isMountedRef = useRef(true);
@@ -18,6 +18,7 @@ export const useParcelPolling = () => {
 
             try {
                 const params = {};
+                params.matchId = matchId;
                 if (lastUpdateRef.current) {
                     params.lastUpdate = lastUpdateRef.current;
                 }

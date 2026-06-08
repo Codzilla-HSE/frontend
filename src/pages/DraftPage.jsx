@@ -1,141 +1,87 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useMatchSession } from './useMatchSession.js';
+import {useMatchSession} from './useMatchSession.js';
+import './DraftPage.css';
 
 const DraftPage = () => {
-
     const { matchId } = useParams();
     const { sessionData, sendBan, isConnected } = useMatchSession(matchId);
 
     if (!isConnected) return <div className="loader">Установка соединения с сервером...</div>;
     if (!sessionData) return <div className="loader">Загрузка данных драфта...</div>;
 
-    const { remainOptions, firstUserMove } = sessionData;
+    const { optionsStates: categories, firstUserMove } = sessionData;
 
     return (
-        <div style={styles.container}>
-
-            <header style={styles.header}>
-                <h1>Draft Session #{matchId.substring(0, 8)}</h1>
-                <div style={{
-                    ...styles.turnIndicator,
-                    backgroundColor: firstUserMove ? '#3b82f6' : '#ef4444'
-                }}>
+        <div className="draft-container">
+            <header className="draft-header">
+                <h1 className="draft-title">Draft Session #{matchId.substring(0, 8)}</h1>
+                <div
+                    className="draft-turn-indicator"
+                    style={{ backgroundColor: firstUserMove ? '#3b82f6' : '#ef4444' }}
+                >
                     {firstUserMove ? "Ход Игрока 1" : "Ход Игрока 2"}
                 </div>
             </header>
 
-            <main style={styles.main}>
+            <main className="draft-main">
+                <div className="draft-list">
+                    {categories.map(({ category, options, active }) => {
 
-                <div style={styles.grid}>
-                    {Object.entries(remainOptions).map(([category, options]) => (
-                        <div key={category} style={styles.categoryCard}>
-                            <h2 style={styles.categoryTitle}>{category}</h2>
-                            <div style={styles.optionsList}>
-                                {options.length > 0 ? (
-                                    options.map((option) => (
-                                        <button
-                                            key={option}
-                                            onClick={() => sendBan(category, option)}
-                                            style={styles.banButton}
-                                            onMouseOver={(e) => e.target.style.backgroundColor = '#fee2e2'}
-                                            onMouseOut={(e) => e.target.style.backgroundColor = '#fff'}
-                                        >
-                                            Ban {option}
-                                        </button>
-                                    ))
-                                ) : (
-                                    <p style={styles.emptyText}>Опций не осталось</p>
-                                )}
+
+                        const remainCount = options ? options.filter(o => !o.banned).length : 0;
+
+                        const isCategoryFinished = !active && remainCount === 1;
+
+                        return (
+                            <div
+                                key={category}
+                                className={`draft-category-card ${active ? 'active' : ''} ${isCategoryFinished ? 'finished' : ''}`}
+                                style={isCategoryFinished ? { opacity: 1 } : {}} // Возвращаем полную яркость завершенной карточке
+                            >
+                                <div className="draft-category-header">
+                                    <h2 className="draft-category-title">{category}</h2>
+                                    {active && <span className="draft-active-badge">Текущий выбор</span>}
+                                    {isCategoryFinished && <span className="draft-active-badge" style={{ backgroundColor: 'rgba(76, 175, 80, 0.1)', color: '#4caf50', borderColor: 'rgba(76, 175, 80, 0.2)' }}>Выбрано</span>}
+                                </div>
+
+                                <div className="draft-options-list">
+                                    {options && options.length > 0 ? (
+                                        options.map(({ option, banned }) => {
+                                            const isClickable = active && !banned;
+
+                                            // Определяем классы стилей для кнопки
+                                            let btnClass = "draft-ban-btn";
+
+                                            if (banned) {
+                                                btnClass += " banned";
+                                            } else if (isCategoryFinished) {
+                                                // Если категория завершена и опция не забанена — это наш победитель!
+                                                btnClass += " selected-winner";
+                                            }
+
+                                            return (
+                                                <button
+                                                    key={option}
+                                                    disabled={!isClickable}
+                                                    onClick={() => sendBan(category, option)}
+                                                    className={btnClass}
+                                                >
+                                                    {banned ? `${option}` : isCategoryFinished ? `${option}` : `${option}`}
+                                                </button>
+                                            );
+                                        })
+                                    ) : (
+                                        <p className="muted">Опций не осталось</p>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </main>
-
-            <footer style={styles.footer}>
-                <p>Выберите категорию и опцию, которую хотите исключить из матча.</p>
-            </footer>
         </div>
     );
-};
-
-const styles = {
-    container: {
-        fontFamily: 'Inter, system-ui, sans-serif',
-        backgroundColor: '#f8fafc',
-        minHeight: '100vh',
-        padding: '20px',
-        color: '#1e293b'
-    },
-    header: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '30px',
-        borderBottom: '2px solid #e2e8f0',
-        paddingBottom: '10px'
-    },
-    turnIndicator: {
-        padding: '10px 20px',
-        borderRadius: '8px',
-        color: 'white',
-        fontWeight: 'bold',
-        transition: 'all 0.3s ease'
-    },
-    errorBanner: {
-        backgroundColor: '#fef2f2',
-        border: '1px solid #fee2e2',
-        color: '#dc2626',
-        padding: '15px',
-        borderRadius: '8px',
-        marginBottom: '20px',
-        animation: 'shake 0.5s ease'
-    },
-    grid: {
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-        gap: '20px'
-    },
-    categoryCard: {
-        backgroundColor: 'white',
-        borderRadius: '12px',
-        padding: '20px',
-        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
-        border: '1px solid #e2e8f0'
-    },
-    categoryTitle: {
-        fontSize: '1.25rem',
-        marginBottom: '15px',
-        color: '#475569',
-        borderLeft: '4px solid #64748b',
-        paddingLeft: '10px'
-    },
-    optionsList: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: '10px'
-    },
-    banButton: {
-        backgroundColor: '#fff',
-        border: '1px solid #e2e8f0',
-        padding: '8px 16px',
-        borderRadius: '6px',
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-        fontSize: '0.9rem',
-        fontWeight: '500'
-    },
-    emptyText: {
-        color: '#94a3b8',
-        fontStyle: 'italic'
-    },
-    footer: {
-        marginTop: '40px',
-        textAlign: 'center',
-        color: '#64748b',
-        fontSize: '0.875rem'
-    }
 };
 
 export default DraftPage;
