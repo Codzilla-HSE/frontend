@@ -2,25 +2,81 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import {useMatchSession} from './useMatchSession.js';
 import './DraftPage.css';
+import {useUser} from "../context/UserContext.jsx";
 
 const DraftPage = () => {
     const { matchId } = useParams();
-    const { sessionData, sendBan, isConnected } = useMatchSession(matchId);
-
+    const { sessionData, sendBan, isConnected, opponent } = useMatchSession(matchId);
+    const {user} = useUser();
     if (!isConnected) return <div className="loader">Установка соединения с сервером...</div>;
     if (!sessionData) return <div className="loader">Загрузка данных драфта...</div>;
 
-    const { optionsStates: categories, firstUserMove } = sessionData;
+    const amIFirstUser = user?.id === sessionData.firstUserId;
+    const isMyTurn = amIFirstUser ? sessionData.firstUserMove : !sessionData.firstUserMove;
+
+    const { optionsStates: categories} = sessionData;
 
     return (
         <div className="draft-container">
-            <header className="draft-header">
-                <h1 className="draft-title">Draft Session #{matchId.substring(0, 8)}</h1>
+            {/* Обновленный заголовок сессии с данными оппонента */}
+            <header className="draft-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px', gap: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+
+
+                    {/* Оппонент внутри Хедера */}
+                    {opponent ? (
+                        <div className="draft-opponent-panel" style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            background: '#1e293b',
+                            padding: '8px 16px',
+                            borderRadius: '12px',
+                            border: '1px solid #334155'
+                        }}>
+                            <img
+                                /* Ссылка есть всегда */
+                                src={opponent.iconUrl}
+                                alt="Avatar"
+                                style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #475569' }}
+                                /* ОБРАБОТЧИК ОШИБКИ: если картинки нет по ссылке, заменяем на заглушку */
+                                onError={(e) => {
+                                    // Чтобы избежать бесконечного цикла, если и заглушка упадет:
+                                    if (e.target.src !== 'https://img.icons8.com/windows/32/94a3b8/user-male-circle.png') {
+                                        e.target.src = 'https://img.icons8.com/windows/32/94a3b8/user-male-circle.png';
+                                        e.target.style.padding = '4px'; // Немного отступа для иконки
+                                        e.target.style.background = '#334155';
+                                    }
+                                }}
+                            />
+
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <span style={{ color: '#94a3b8', fontSize: '11px', lineHeight: '1.2' }}>Оппонент</span>
+                                <strong style={{ color: '#fff', fontSize: '14px', lineHeight: '1.2' }}>{opponent.nickname}</strong>
+                            </div>
+                            <div style={{ marginLeft: '6px', background: 'rgba(245, 158, 11, 0.1)', padding: '2px 8px', borderRadius: '4px', fontSize: '12px', color: '#f59e0b', fontWeight: 'bold' }}>
+                                ★ {opponent.rating ?? 1000}
+                            </div>
+                        </div>
+                    ) : (
+                        <div style={{ color: '#64748b', fontSize: '14px' }}>Загрузка оппонента...</div>
+                    )}
+                </div>
+
+                {/* Индикатор хода */}
                 <div
                     className="draft-turn-indicator"
-                    style={{ backgroundColor: firstUserMove ? '#3b82f6' : '#ef4444' }}
+                    style={{
+                        backgroundColor: isMyTurn ? '#22c55e' : '#ef4444',
+                        padding: '8px 16px',
+                        borderRadius: '20px',
+                        color: '#fff',
+                        fontWeight: 'bold',
+                        transition: 'background-color 0.3s',
+                        whiteSpace: 'nowrap'
+                    }}
                 >
-                    {firstUserMove ? "Ход Игрока 1" : "Ход Игрока 2"}
+                    {isMyTurn ? "Ходите вы" : "Ходит оппонент"}
                 </div>
             </header>
 

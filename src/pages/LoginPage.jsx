@@ -89,7 +89,7 @@ export default function LoginPage() {
             setIsLoading(false);
         }
     };
-
+    // git pull --recurse-submodules && git submodule update --remote --recursive
     return (
         <div className="login-page-container">
             <Header user={null} onNavClick={handleResetToLogin}/>
