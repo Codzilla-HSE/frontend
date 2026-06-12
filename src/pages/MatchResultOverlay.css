@@ -1,0 +1,121 @@
+/* Шрифт из GTA SA — Pricedown (точный аналог надписей WASTED/RESPECT) */
+@import url('https://fonts.googleapis.com/css2?family=Pricedown:wght@400&display=swap');
+/*
+  Если Pricedown не подгрузится из Google Fonts (он там есть как 'Pricedown Bl'),
+  как запасной вариант используем Impact — выглядит близко.
+*/
+
+.overlay-root {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    /* Анимация появления */
+    animation: overlay-fade-in 0.6s ease forwards;
+}
+
+/* Фон победы — тёмно-зелёный дым, как в GTA SA при Respect+ */
+.overlay-win {
+    background: radial-gradient(ellipse at center, #0d2b0d 0%, #050f05 60%, #000 100%);
+}
+
+/* Фон поражения — тёмно-красный, как WASTED */
+.overlay-lose {
+    background: radial-gradient(ellipse at center, #2b0000 0%, #110000 60%, #000 100%);
+}
+
+/* Главная надпись — ПОБЕДА / ПОРАЖЕНИЕ */
+.overlay-headline {
+    font-family: 'Pricedown Bl', 'Impact', 'Arial Black', sans-serif;
+    font-size: clamp(72px, 12vw, 160px);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    /* Победа — жёлто-золотой с зелёным свечением, поражение — белый с красным */
+}
+.overlay-win .overlay-headline {
+    color: #f5d000;
+    text-shadow:
+        0 0 20px #f5d00088,
+        0 0 60px #8ec90066,
+        3px 3px 0 #7a6600,
+        -1px -1px 0 #000;
+    animation: headline-pulse 1.8s ease-in-out infinite alternate;
+}
+.overlay-lose .overlay-headline {
+    color: #ffffff;
+    text-shadow:
+        0 0 20px #ff000099,
+        0 0 60px #cc000055,
+        3px 3px 0 #660000,
+        -1px -1px 0 #000;
+    animation: headline-pulse 1.8s ease-in-out infinite alternate;
+}
+
+/* "RESPECT +" / "WASTED" — атмосферная подпись */
+.overlay-subtitle {
+    font-family: 'Pricedown Bl', 'Impact', 'Arial Black', sans-serif;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.75;
+}
+.overlay-win .overlay-subtitle  { color: #8ec900; }
+.overlay-lose .overlay-subtitle { color: #cc2200; }
+
+/* Карточка рейтинга */
+.overlay-rating-card {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 16px 32px;
+    backdrop-filter: blur(6px);
+    font-family: 'Inter', sans-serif;
+    margin-top: 8px;
+}
+.rating-label {
+    font-size: 1rem;
+    color: #aaa;
+    letter-spacing: 0.03em;
+}
+.rating-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+}
+.rating-delta {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+.delta-positive { color: #4cef70; }
+.delta-negative { color: #ff4444; }
+
+/* Таймер редиректа */
+.overlay-timer {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.04em;
+    margin-top: 8px;
+}
+
+/* Появление */
+@keyframes overlay-fade-in {
+    from { opacity: 0; transform: scale(1.04); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* Пульсация заголовка */
+@keyframes headline-pulse {
+    from { filter: brightness(1);   }
+    to   { filter: brightness(1.18); }
+}

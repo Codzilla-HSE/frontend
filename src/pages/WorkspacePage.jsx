@@ -9,6 +9,8 @@ import Footer from './components/layout/Footer';
 import LeftWorkspace from './components/workspace/LeftWorkspace';
 import RightWorkspace from './components/workspace/RightWorkspace';
 import './WorkspacePage.css';
+import MatchResultOverlay from './MatchResultOverlay';
+import { useMatchStore } from "./useMatchStore.js";
 
 function WorkspacePage() {
   const {matchId} = useParams();
@@ -18,6 +20,8 @@ function WorkspacePage() {
   const [isSwapped, setIsSwapped] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const { submissions } = useParcelPolling();
+
+  const matchResult = useMatchStore((state) => state.matchResult);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -65,6 +69,14 @@ function WorkspacePage() {
         themeConfig={{ isDarkMode, setIsDarkMode }}
         workspaceConfig={{ isSwapped, setIsSwapped }}
       />
+
+      {matchResult && (
+          <MatchResultOverlay
+              outcome={matchResult.outcome}
+              newRating={matchResult.newRating}
+              ratingDelta={matchResult.ratingDelta}
+          />
+      )}
 
     </div>
   );
