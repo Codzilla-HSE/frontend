@@ -29,12 +29,21 @@ export const MatchListener = ({ matchId, children }) => {
             }
         });
 
+        const resultSub = subscribe('/user/queue/match-result', (msg) => {
+            try {
+                handleIncomingMessage(JSON.parse(msg.body));
+            } catch (err) {
+                console.error(err);
+            }
+        });
+
         return () => {
             if (sessionSub) sessionSub.unsubscribe();
             if (errorSub) errorSub.unsubscribe();
+            if (resultSub)  resultSub.unsubscribe();
             resetStore();
         };
-    }, [isConnected, matchId, handleIncomingMessage, resetStore, subscribe]);
+    }, [isConnected, matchId, handleIncomingMessage, handleErrorMessage, resetStore, subscribe]);
 
     return children;
 };
