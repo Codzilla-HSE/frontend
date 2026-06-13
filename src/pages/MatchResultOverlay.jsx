@@ -11,6 +11,11 @@ export default function MatchResultOverlay({ outcome, newRating, ratingDelta }) 
 
     const isWin = outcome === 'WIN';
 
+    const goToBattle = () => {
+        clearInterval(intervalRef.current);
+        navigate('/battle');
+    };
+
     useEffect(() => {
         intervalRef.current = setInterval(() => {
             setSecondsLeft((s) => {
@@ -47,6 +52,14 @@ export default function MatchResultOverlay({ outcome, newRating, ratingDelta }) 
                     ({deltaSign}{ratingDelta})
                 </span>
             </div>
+
+            <button
+                type="button"
+                className={`overlay-return-btn ${isWin ? 'overlay-return-win' : 'overlay-return-lose'}`}
+                onClick={goToBattle}
+            >
+                Вернуться к поиску
+            </button>
 
             <div className="overlay-timer">
                 Переход на страницу поиска через {secondsLeft} сек…
