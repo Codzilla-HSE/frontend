@@ -16,6 +16,11 @@ export const useMatchSession = (matchId) => {
     const [opponent, setOpponent] = useState(null);
     const {user} = useUser();
     const [sessionData, setSessionData] = useState(null);
+    const matchSubmissions = useMatchStore((state) => state.matchSubmissions);
+    const userSubmissions = matchSubmissions
+        .filter(sub => sub.userId === user?.id);
+
+
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setSessionData(draftSessionDTO?.draftSession);
@@ -51,9 +56,20 @@ export const useMatchSession = (matchId) => {
         }
     }, [isRedirect, matchId, navigate, resetStore]);
 
+    useEffect(() => {
+        if (matchSubmissions.length === 0) return;
+
+        const lastSubmission = matchSubmissions[0];
+
+        if (lastSubmission.userId !== user?.id) {
+            toast.success("Оппонент попытался решить задачу");
+        }
+
+    }, [matchSubmissions.length]);
+
     const sendBan = (category, value) => {
         publish(`/app/${matchId}/ban`, {category: category, banObject: value});
     };
 
-    return {sessionData, opponent, error, sendBan, isConnected};
+    return {sessionData, opponent, error, sendBan, isConnected, userSubmissions};
 };

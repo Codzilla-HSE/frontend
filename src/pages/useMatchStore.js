@@ -6,6 +6,7 @@ export const useMatchStore = create((set) => ({
     error: { stage: null, message: null },
     matchStarted: false,
     matchResult: null,
+    matchSubmissions : [],
 
     handleIncomingMessage: (payload) => {
         switch (payload.status) {
@@ -17,6 +18,12 @@ export const useMatchStore = create((set) => ({
                 break;
             case 'MATCH_FINISHED':
                 set({ matchResult: payload.payload });
+                break;
+
+            case 'SUBMISSION':
+                set((state) => ({
+                    matchSubmissions: [ payload.payload, ...state.matchSubmissions]
+                }));
                 break;
         }
     },

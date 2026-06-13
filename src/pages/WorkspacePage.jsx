@@ -3,7 +3,6 @@ import SettingsModal from './components/ui/SettingsModal';
 import { useState, useEffect } from 'react';
 import { PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import {useNavigate, useParams} from 'react-router-dom';
-import { useParcelPolling } from './useParcelPolling';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import LeftWorkspace from './components/workspace/LeftWorkspace';
@@ -11,6 +10,7 @@ import RightWorkspace from './components/workspace/RightWorkspace';
 import './WorkspacePage.css';
 import MatchResultOverlay from './MatchResultOverlay';
 import { useMatchStore } from "./useMatchStore.js";
+import {useMatchSession} from "./useMatchSession.js";
 
 function WorkspacePage() {
   const {matchId} = useParams();
@@ -19,7 +19,7 @@ function WorkspacePage() {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isSwapped, setIsSwapped] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const { submissions } = useParcelPolling();
+  const { userSubmissions } = useMatchSession();
 
   const matchResult = useMatchStore((state) => state.matchResult);
 
@@ -43,9 +43,9 @@ function WorkspacePage() {
       <main className="workspace">
         <PanelGroup direction="horizontal">
           {isSwapped ? (
-            <RightWorkspace position="left" submissions={submissions}  />
+            <RightWorkspace position="left" submissions={userSubmissions}  />
           ) : (
-            <LeftWorkspace isDarkMode={isDarkMode} position="left" submissions = {submissions} matchId = {matchId} />
+            <LeftWorkspace isDarkMode={isDarkMode} position="left" submissions = {userSubmissions} matchId = {matchId} />
           )}
           
           <PanelResizeHandle className="resizer-vertical">
@@ -55,7 +55,7 @@ function WorkspacePage() {
           {isSwapped ? (
             <LeftWorkspace isDarkMode={isDarkMode} position="right" />
           ) : (
-            <RightWorkspace position="right" submissions={submissions} />
+            <RightWorkspace position="right" submissions={userSubmissions} />
           )}
         </PanelGroup>
       </main>
