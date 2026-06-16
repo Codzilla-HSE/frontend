@@ -6,6 +6,7 @@ import Footer from './components/layout/Footer';
 import SettingsModal from './components/ui/SettingsModal';
 import QueueModal from './components/ui/QueueModal';
 import { useQueueSSE } from './useQueueSSE';
+import {useMatchStore} from "./useMatchStore.js";
 import './BattlePage.css';
 
 if (typeof global === 'undefined') {
@@ -16,9 +17,14 @@ export default function BattlePage() {
     const navigate = useNavigate();
     const { logout } = useUser();
     const [showSettings, setShowSettings] = useState(false);
-
+    const resetStore = useMatchStore((state) => state.resetStore);
     const { isModalOpen, queueSize, waitSeconds, isConnecting, enterQueue, leaveQueue } =
         useQueueSSE();
+
+    const enterQueueAndResetStore = () => {
+        resetStore();
+        enterQueue();
+    }
 
     const handleLogout = () => {
         logout();
@@ -37,7 +43,7 @@ export default function BattlePage() {
 
                 <button
                     className="btn-battle"
-                    onClick={enterQueue}
+                    onClick={enterQueueAndResetStore}
                     disabled={isConnecting}
                 >
                     {isConnecting ? 'Подключение...' : 'В БОЙ!'}

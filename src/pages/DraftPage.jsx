@@ -76,7 +76,7 @@ const DraftPage = () => {
                         whiteSpace: 'nowrap'
                     }}
                 >
-                    {isMyTurn ? "Ходите вы" : "Ходит оппонент"}
+                    {isMyTurn ? "Вы баните опцию" : "Оппонент банит опцию"}
                 </div>
             </header>
 
@@ -103,30 +103,30 @@ const DraftPage = () => {
 
                                 <div className="draft-options-list">
                                     {options && options.length > 0 ? (
-                                        options.map(({ option, banned }) => {
-                                            const isClickable = active && !banned;
+                                        // Копируем массив через [...] и сортируем по свойству option (строка с именем)
+                                        [...options]
+                                            .sort((a, b) => a.option.localeCompare(b.option))
+                                            .map(({ option, banned }) => {
+                                                const isClickable = active && !banned;
 
-                                            // Определяем классы стилей для кнопки
-                                            let btnClass = "draft-ban-btn";
+                                                let btnClass = "draft-ban-btn";
+                                                if (banned) {
+                                                    btnClass += " banned";
+                                                } else if (isCategoryFinished) {
+                                                    btnClass += " selected-winner";
+                                                }
 
-                                            if (banned) {
-                                                btnClass += " banned";
-                                            } else if (isCategoryFinished) {
-                                                // Если категория завершена и опция не забанена — это наш победитель!
-                                                btnClass += " selected-winner";
-                                            }
-
-                                            return (
-                                                <button
-                                                    key={option}
-                                                    disabled={!isClickable}
-                                                    onClick={() => sendBan(category, option)}
-                                                    className={btnClass}
-                                                >
-                                                    {banned ? `${option}` : isCategoryFinished ? `${option}` : `${option}`}
-                                                </button>
-                                            );
-                                        })
+                                                return (
+                                                    <button
+                                                        key={option}
+                                                        disabled={!isClickable}
+                                                        onClick={() => sendBan(category, option)}
+                                                        className={btnClass}
+                                                    >
+                                                        {option}
+                                                    </button>
+                                                );
+                                            })
                                     ) : (
                                         <p className="muted">Опций не осталось</p>
                                     )}

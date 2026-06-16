@@ -37,48 +37,48 @@ function WorkspacePage() {
   };
 
   return (
-    <div className="layout-container">
-      <Header onSettingsClick={() => setShowSettings(true)} />
+      <div className="layout-container">
+        <Header onSettingsClick={() => setShowSettings(true)} />
 
-      <main className="workspace">
-        <PanelGroup direction="horizontal">
-          {isSwapped ? (
-            <RightWorkspace position="left" submissions={userSubmissions}  />
-          ) : (
-            <LeftWorkspace isDarkMode={isDarkMode} position="left" submissions = {userSubmissions} matchId = {matchId} />
-          )}
-          
-          <PanelResizeHandle className="resizer-vertical">
-            <div className="resizer-line-vertical"></div>
-          </PanelResizeHandle>
-          
-          {isSwapped ? (
-            <LeftWorkspace isDarkMode={isDarkMode} position="right" />
-          ) : (
-            <RightWorkspace position="right" submissions={userSubmissions} />
-          )}
-        </PanelGroup>
-      </main>
+        <main className="workspace">
+          <PanelGroup direction="horizontal">
+            {isSwapped ? (
+                <RightWorkspace position="left" submissions={userSubmissions}  />
+            ) : (
+                <LeftWorkspace isDarkMode={isDarkMode} position="left" submissions = {userSubmissions} matchId = {matchId} />
+            )}
 
-      <Footer />
+            <PanelResizeHandle className="resizer-vertical">
+              <div className="resizer-line-vertical"></div>
+            </PanelResizeHandle>
 
-      <SettingsModal 
-        isOpen={showSettings}
-        onClose={() => setShowSettings(false)}
-        onLogout={handleLogout}
-        themeConfig={{ isDarkMode, setIsDarkMode }}
-        workspaceConfig={{ isSwapped, setIsSwapped }}
-      />
+            {isSwapped ? (
+                <LeftWorkspace isDarkMode={isDarkMode} position="right" />
+            ) : (
+                <RightWorkspace position="right" submissions={userSubmissions} />
+            )}
+          </PanelGroup>
+        </main>
 
-      {matchResult && (
-          <MatchResultOverlay
-              outcome={matchResult.outcome}
-              newRating={matchResult.newRating}
-              ratingDelta={matchResult.ratingDelta}
-          />
-      )}
+        <Footer />
 
-    </div>
+        <SettingsModal
+            isOpen={showSettings}
+            onClose={() => setShowSettings(false)}
+            onLogout={handleLogout}
+            themeConfig={{ isDarkMode, setIsDarkMode }}
+            workspaceConfig={{ isSwapped, setIsSwapped }}
+        />
+
+        {matchResult && (
+            <MatchResultOverlay
+                outcome={matchResult.outcome}
+                newRating={matchResult.newRating}
+                ratingDelta={matchResult.ratingDelta}
+            />
+        )}
+
+      </div>
   );
 }
 

@@ -32,5 +32,5 @@ export const useMatchStore = create((set) => ({
         set({ error: { stage: null, message: payload.message } });
     },
 
-    resetStore: () => set({ matchStarted: null, error: null, matchResult: null }),
+    resetStore: () => set({ matchStarted: false, error: {stage : null, message : null}, matchResult: null, draftSessionDTO : null, matchSubmissions : [] }),
 }));

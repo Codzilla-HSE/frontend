@@ -19,7 +19,7 @@ export const useMatchSession = (matchId) => {
     const matchSubmissions = useMatchStore((state) => state.matchSubmissions);
     const userSubmissions = matchSubmissions
         .filter(sub => sub.userId === user?.id);
-
+    console.log(`user id : ${user?.id}`);
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -32,7 +32,11 @@ export const useMatchSession = (matchId) => {
         const amIFirstUser = user.id === sessionData.firstUserId;
         const opponentId = amIFirstUser ? sessionData.secondUserId : sessionData.firstUserId;
 
-        if (!opponentId) return;
+        if (!opponentId) {
+            console.log(`session data: ${sessionData}`);
+            console.log(`opponent id : ${opponentId}`);
+            return;
+        };
 
         api.get(`user/info/${opponentId}`)
             .then(response => {
@@ -60,8 +64,9 @@ export const useMatchSession = (matchId) => {
         if (matchSubmissions.length === 0) return;
 
         const lastSubmission = matchSubmissions[0];
-
+        console.log(`submission id: ${lastSubmission.userId}`);
         if (lastSubmission.userId !== user?.id) {
+
             toast.success("Оппонент попытался решить задачу");
         }
 
