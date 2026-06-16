@@ -16,6 +16,11 @@ export const useMatchSession = (matchId) => {
     const [opponent, setOpponent] = useState(null);
     const {user} = useUser();
     const [sessionData, setSessionData] = useState(null);
+    const matchSubmissions = useMatchStore((state) => state.matchSubmissions);
+    const userSubmissions = matchSubmissions
+        .filter(sub => sub.userId === user?.id);
+    console.log(`user id : ${user?.id}`);
+
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setSessionData(draftSessionDTO?.draftSession);
@@ -27,7 +32,11 @@ export const useMatchSession = (matchId) => {
         const amIFirstUser = user.id === sessionData.firstUserId;
         const opponentId = amIFirstUser ? sessionData.secondUserId : sessionData.firstUserId;
 
-        if (!opponentId) return;
+        if (!opponentId) {
+            console.log(`session data: ${sessionData}`);
+            console.log(`opponent id : ${opponentId}`);
+            return;
+        };
 
         api.get(`user/info/${opponentId}`)
             .then(response => {
@@ -51,9 +60,21 @@ export const useMatchSession = (matchId) => {
         }
     }, [isRedirect, matchId, navigate, resetStore]);
 
+    useEffect(() => {
+        if (matchSubmissions.length === 0) return;
+
+        const lastSubmission = matchSubmissions[0];
+        console.log(`submission id: ${lastSubmission.userId}`);
+        if (lastSubmission.userId !== user?.id) {
+
+            toast.success("Оппонент попытался решить задачу");
+        }
+
+    }, [matchSubmissions.length]);
+
     const sendBan = (category, value) => {
         publish(`/app/${matchId}/ban`, {category: category, banObject: value});
     };
 
-    return {sessionData, opponent, error, sendBan, isConnected};
+    return {sessionData, opponent, error, sendBan, isConnected, userSubmissions};
 };
