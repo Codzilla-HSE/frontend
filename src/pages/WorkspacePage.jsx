@@ -11,6 +11,7 @@ import './WorkspacePage.css';
 import MatchResultOverlay from './MatchResultOverlay';
 import { useMatchStore } from "./useMatchStore.js";
 import {useMatchSession} from "./useMatchSession.js";
+import {api} from "../api/axiosConfig.js";
 
 function WorkspacePage() {
   const {matchId} = useParams();
@@ -20,7 +21,7 @@ function WorkspacePage() {
   const [isSwapped, setIsSwapped] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const { userSubmissions } = useMatchSession();
-
+  const [matchOptions, setMatchOptions] = useState(null);
   const matchResult = useMatchStore((state) => state.matchResult);
 
   useEffect(() => {
@@ -30,6 +31,29 @@ function WorkspacePage() {
       document.body.classList.add('light-theme');
     }
   }, [isDarkMode]);
+
+    useEffect(() => {
+        let ignore = false;
+
+        const fetchOptions = async () => {
+            try {
+                const response = await api.get(`/match/${matchId}/options`);
+                if (!ignore) {
+                    setMatchOptions(response.data);
+                }
+            } catch (error) {
+                console.error("Ошибка при загрузке опций матча:", error);
+            }
+        };
+
+        if (matchId) {
+            fetchOptions();
+        }
+
+        return () => {
+            ignore = true;
+        };
+    }, [matchId]);
 
   const handleLogout = () => {
     logout();
@@ -43,9 +67,9 @@ function WorkspacePage() {
         <main className="workspace">
           <PanelGroup direction="horizontal">
             {isSwapped ? (
-                <RightWorkspace position="left" submissions={userSubmissions}  />
+                <RightWorkspace position="left" submissions={userSubmissions} matchOptions = {matchOptions}  />
             ) : (
-                <LeftWorkspace isDarkMode={isDarkMode} position="left" submissions = {userSubmissions} matchId = {matchId} />
+                <LeftWorkspace isDarkMode={isDarkMode} position="left" submissions = {userSubmissions} matchId = {matchId} matchOptions = {matchOptions}/>
             )}
 
             <PanelResizeHandle className="resizer-vertical">

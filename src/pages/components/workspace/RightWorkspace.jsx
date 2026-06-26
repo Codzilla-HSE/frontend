@@ -9,7 +9,7 @@ const LANGUAGE_MAP = {
   63: 'JavaScript'
 };
 
-export default function RightWorkspace({ position = 'right', submissions = [] }) {
+export default function RightWorkspace({ position = 'right', submissions = [], matchOptions = {} }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [activeTab, setActiveTab] = useState('description');
   const panelRef = useRef(null);
@@ -70,10 +70,20 @@ export default function RightWorkspace({ position = 'right', submissions = [] })
 
             <div className="panel-content">
               {activeTab === 'description' ? (
-                <div className="task-description">
-                  <h3>Заголовок задачи</h3>
-                  <p>Текст условия задачи будет загружаться сюда...</p>
-                </div>
+                  <div className="task-description" style={{ padding: '16px', color: '#f8fafc' }}>
+                    {/* Выводим переменную с названием */}
+                    <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '12px', color: '#fff' }}>
+                      {matchOptions.title || "Без названия"}
+                    </h3>
+
+                    {/* Выводим переменную с описанием. whiteSpace сохранит переносы строк */}
+                    <div
+                        className="task-text"
+                        style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', color: '#cbd5e1' }}
+                    >
+                      {matchOptions.statement || "Описание отсутствует"}
+                    </div>
+                  </div>
               ) : (
                 <div className="submissions-container">
                   {(!submissions || !Array.isArray(submissions) || submissions.length === 0) ? (
