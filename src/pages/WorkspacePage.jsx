@@ -14,23 +14,23 @@ import {useMatchSession} from "./useMatchSession.js";
 import {api} from "../api/axiosConfig.js";
 
 function WorkspacePage() {
-  const {matchId} = useParams();
-  const { logout } = useUser();
-  const navigate = useNavigate();
-  const [isDarkMode, setIsDarkMode] = useState(true);
-  const [isSwapped, setIsSwapped] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const { userSubmissions } = useMatchSession();
-  const [matchOptions, setMatchOptions] = useState(null);
-  const matchResult = useMatchStore((state) => state.matchResult);
+    const {matchId} = useParams();
+    const { logout } = useUser();
+    const navigate = useNavigate();
+    const [isDarkMode, setIsDarkMode] = useState(true);
+    const [isSwapped, setIsSwapped] = useState(false);
+    const [showSettings, setShowSettings] = useState(false);
+    const { userSubmissions } = useMatchSession();
+    const [matchOptions, setMatchOptions] = useState(null);
+    const matchResult = useMatchStore((state) => state.matchResult);
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.remove('light-theme');
-    } else {
-      document.body.classList.add('light-theme');
-    }
-  }, [isDarkMode]);
+    useEffect(() => {
+        if (isDarkMode) {
+            document.body.classList.remove('light-theme');
+        } else {
+            document.body.classList.add('light-theme');
+        }
+    }, [isDarkMode]);
 
     useEffect(() => {
         let ignore = false;
@@ -39,6 +39,7 @@ function WorkspacePage() {
             try {
                 const response = await api.get(`/match/${matchId}/options`);
                 if (!ignore) {
+                    console.log(`options : ${response.data.statement}`);
                     setMatchOptions(response.data);
                 }
             } catch (error) {
@@ -55,55 +56,55 @@ function WorkspacePage() {
         };
     }, [matchId]);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
 
-  return (
-      <div className="layout-container">
-        <Header onSettingsClick={() => setShowSettings(true)} />
+    return (
+        <div className="layout-container">
+            <Header onSettingsClick={() => setShowSettings(true)} />
 
-        <main className="workspace">
-          <PanelGroup direction="horizontal">
-            {isSwapped ? (
-                <RightWorkspace position="left" submissions={userSubmissions} matchOptions = {matchOptions}  />
-            ) : (
-                <LeftWorkspace isDarkMode={isDarkMode} position="left" submissions = {userSubmissions} matchId = {matchId} matchOptions = {matchOptions}/>
-            )}
+            <main className="workspace">
+                <PanelGroup direction="horizontal">
+                    {isSwapped ? (
+                        <RightWorkspace position="left" submissions={userSubmissions} matchOptions = {matchOptions}  />
+                    ) : (
+                        <LeftWorkspace isDarkMode={isDarkMode} position="left" submissions = {userSubmissions} matchId = {matchId} matchOptions = {matchOptions}/>
+                    )}
 
-            <PanelResizeHandle className="resizer-vertical">
-              <div className="resizer-line-vertical"></div>
-            </PanelResizeHandle>
+                    <PanelResizeHandle className="resizer-vertical">
+                        <div className="resizer-line-vertical"></div>
+                    </PanelResizeHandle>
 
-            {isSwapped ? (
-                <LeftWorkspace isDarkMode={isDarkMode} position="right" />
-            ) : (
-                <RightWorkspace position="right" submissions={userSubmissions} />
-            )}
-          </PanelGroup>
-        </main>
+                    {isSwapped ? (
+                        <LeftWorkspace isDarkMode={isDarkMode} position="right" matchOptions = {matchOptions} />
+                    ) : (
+                        <RightWorkspace position="right" submissions={userSubmissions} matchOptions = {matchOptions} />
+                    )}
+                </PanelGroup>
+            </main>
 
-        <Footer />
+            <Footer />
 
-        <SettingsModal
-            isOpen={showSettings}
-            onClose={() => setShowSettings(false)}
-            onLogout={handleLogout}
-            themeConfig={{ isDarkMode, setIsDarkMode }}
-            workspaceConfig={{ isSwapped, setIsSwapped }}
-        />
-
-        {matchResult && (
-            <MatchResultOverlay
-                outcome={matchResult.outcome}
-                newRating={matchResult.newRating}
-                ratingDelta={matchResult.ratingDelta}
+            <SettingsModal
+                isOpen={showSettings}
+                onClose={() => setShowSettings(false)}
+                onLogout={handleLogout}
+                themeConfig={{ isDarkMode, setIsDarkMode }}
+                workspaceConfig={{ isSwapped, setIsSwapped }}
             />
-        )}
 
-      </div>
-  );
+            {matchResult && (
+                <MatchResultOverlay
+                    outcome={matchResult.outcome}
+                    newRating={matchResult.newRating}
+                    ratingDelta={matchResult.ratingDelta}
+                />
+            )}
+
+        </div>
+    );
 }
 
 export default WorkspacePage;

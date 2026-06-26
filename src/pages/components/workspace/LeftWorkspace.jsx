@@ -10,23 +10,13 @@ import {multipartApi} from "../../../api/axiosConfig.js";
 
 const DEFAULT_CODE = "# Напишите ваш код здесь...\n";
 
-// const languages = [
-//
-//     { id: 71, name: "Python" },
-//
-//     { id: 54, name: "C++" },
-//
-//     { id: 63, name: "JavaScript" }
-//
-// ];
-//
-// const idToLanguage = {
-//         71 : 'python',
-//         54 : 'cpp',
-//         63 : 'javascript'
-// };
+const enumToLanguage = {
+    'PY' : 'python',
+    'CPP' : 'cpp',
+    'JAVA' : 'java'
+};
 
-export default function LeftWorkspace({isDarkMode, position = 'left', matchId, submissions = []}) {
+export default function LeftWorkspace({isDarkMode, position = 'left', matchId, submissions = [], matchOptions = null}) {
     // const [languageId, setLanguageId] = useState(71);
     const [code, setCode] = useState(DEFAULT_CODE);
     const [showResetModal, setShowResetModal] = useState(false);
@@ -157,6 +147,7 @@ export default function LeftWorkspace({isDarkMode, position = 'left', matchId, s
                                     height="100%"
                                     theme={isDarkMode ? "vs-dark" : "light"}
                                     value={code}
+                                    language={enumToLanguage[matchOptions?.language] || 'python'}
                                     onChange={(value) => setCode(value)}
                                     options={{
                                         fontSize: 15,
