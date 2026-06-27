@@ -20,7 +20,7 @@ function WorkspacePage() {
     const [isDarkMode, setIsDarkMode] = useState(true);
     const [isSwapped, setIsSwapped] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
-    const { userSubmissions } = useMatchSession();
+    const { userSubmissions } = useMatchSession(matchId);
     const [matchOptions, setMatchOptions] = useState(null);
     const matchResult = useMatchStore((state) => state.matchResult);
 

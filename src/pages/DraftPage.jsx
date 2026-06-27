@@ -16,8 +16,8 @@ const DraftPage = () => {
     const [wsTimeLeft, setWsTimeLeft] = useState(null);
     const [showSettings, setShowSettings] = useState(false);
 
-    const amIFirstUser = user?.id === sessionData.firstUserId;
-    const isMyTurn = amIFirstUser ? sessionData.firstUserMove : !sessionData.firstUserMove;
+    const amIFirstUser = user?.id === sessionData?.firstUserId;
+    const isMyTurn = amIFirstUser ? sessionData?.firstUserMove : !sessionData?.firstUserMove;
 
     useEffect(() => {
         if (!isConnected || !sessionData) return;
