@@ -30,6 +30,14 @@ vi.mock('./components/workspace/LeftWorkspace', () => ({ default: () => <div /> 
 vi.mock('./components/workspace/RightWorkspace', () => ({ default: () => <div /> }));
 vi.mock('./components/layout/Footer', () => ({ default: () => <div /> }));
 
+vi.mock('./useMatchSession.js', () => ({
+  useMatchSession: () => ({ userSubmissions: [] }),
+}));
+
+vi.mock('./useMatchStore.js', () => ({
+  useMatchStore: (selector) => selector({ matchResult: null }),
+}));
+
 describe('WorkspacePage', () => {
   const mockLogout = vi.fn();
 
