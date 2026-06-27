@@ -30,7 +30,7 @@ export default function ActionTimer({ timeLeft, totalDuration = 20, isMyTurn = t
                 width: `${percentage}%`,
                 height: '100%',
                 backgroundColor: getBarColor(),
-                transition: 'width 1s linear, background-color 0.5s ease',
+                transition: 'width 0.1s linear, background-color 0.5s ease',
             }} />
         </div>
     );
