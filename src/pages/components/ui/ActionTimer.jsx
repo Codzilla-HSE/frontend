@@ -1,4 +1,4 @@
-function ActionTimer({ timeLeft, totalDuration = 20, isMyTurn = true }) {
+export default function ActionTimer({ timeLeft, totalDuration = 20, isMyTurn = true }) {
 
     const percentage = Math.max(0, Math.min(100, (timeLeft / totalDuration) * 100));
 
