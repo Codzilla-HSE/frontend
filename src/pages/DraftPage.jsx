@@ -5,7 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import './DraftPage.css';
 import {useUser} from "../context/UserContext.jsx";
 import Header from "./components/layout/Header.jsx";
-import ActionTimer from "components/ui/ActionTimer.jsx";
+import ActionTimer from "./components/ui/ActionTimer.jsx";
 import SettingsModal from "./components/ui/SettingsModal.jsx";
 
 const DraftPage = () => {
