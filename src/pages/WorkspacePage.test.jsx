@@ -30,6 +30,20 @@ vi.mock('./components/workspace/LeftWorkspace', () => ({ default: () => <div /> 
 vi.mock('./components/workspace/RightWorkspace', () => ({ default: () => <div /> }));
 vi.mock('./components/layout/Footer', () => ({ default: () => <div /> }));
 
+vi.mock('../context/WebSocketContext', () => ({
+  useWebSocket: () => ({
+    isConnected: true,
+    publish: vi.fn(),
+  }),
+}));
+
+vi.mock('../context/UserContext', () => ({
+  useUser: () => ({
+    user: { id: 'test-user-id', nickname: 'CodzillaPro' },
+    logout: vi.fn(),
+  }),
+}));
+
 describe('WorkspacePage', () => {
   const mockLogout = vi.fn();
 
