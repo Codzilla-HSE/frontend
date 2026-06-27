@@ -43,7 +43,7 @@ function WorkspacePage() {
                     setMatchOptions(response.data);
                 }
             } catch (error) {
-                console.error("Ошибка при загрузке опций матча:", error);
+                console.error("Ошибка при загрузке опций матча:", error.message);
             }
         };
 

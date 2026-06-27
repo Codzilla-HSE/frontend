@@ -106,13 +106,6 @@ export default function RightWorkspace({ position = 'right', submissions = [], m
               <PanelResizeHandle className="resizer-horizontal">
                 <div className="resizer-line-horizontal"></div>
               </PanelResizeHandle>
-
-              <Panel defaultSize={50} minSize={15} className="panel">
-                <PanelHeader title="Метрики противника" Icon={BarChart2} />
-                <div className="panel-content">
-                  <p>Данные по метрикам оппонента...</p>
-                </div>
-              </Panel>
             </PanelGroup>
         )}
       </Panel>

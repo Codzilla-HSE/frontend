@@ -13,7 +13,7 @@ const DraftPage = () => {
     const {matchId} = useParams();
     const {sessionData, sendBan, isConnected, opponent} = useMatchSession(matchId);
     const {user, logout} = useUser();
-    const [wsTimeLeft, setWsTimeLeft] = useState(null);
+    const [wsTimeLeft, setWsTimeLeft] = useState(20);
     const [showSettings, setShowSettings] = useState(false);
 
     const amIFirstUser = user?.id === sessionData?.firstUserId;
