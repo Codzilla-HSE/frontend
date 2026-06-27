@@ -10,7 +10,7 @@ import RightWorkspace from './components/workspace/RightWorkspace';
 import './WorkspacePage.css';
 import MatchResultOverlay from './MatchResultOverlay';
 import { useMatchStore } from "./useMatchStore.js";
-import {useMatchSession} from "./useMatchSession.js";
+import {useMatchSession} from "./useMatchSession.jsx";
 import {api} from "../api/axiosConfig.js";
 
 function WorkspacePage() {

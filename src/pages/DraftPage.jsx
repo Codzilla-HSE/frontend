@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import {useMatchSession} from './useMatchSession.js';
+import {useMatchSession} from './useMatchSession.jsx';
 import './DraftPage.css';
 import {useUser} from "../context/UserContext.jsx";
 
