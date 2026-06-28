@@ -42,12 +42,6 @@ vi.mock('../context/UserContext', () => ({
     user: { id: 'test-user-id', nickname: 'CodzillaPro' },
     logout: vi.fn(),
   }),
-vi.mock('./useMatchSession.js', () => ({
-  useMatchSession: () => ({ userSubmissions: [] }),
-}));
-
-vi.mock('./useMatchStore.js', () => ({
-  useMatchStore: (selector) => selector({ matchResult: null }),
 }));
 
 describe('WorkspacePage', () => {
