@@ -10,23 +10,25 @@ import {multipartApi} from "../../../api/axiosConfig.js";
 
 const DEFAULT_CODE = "# Напишите ваш код здесь...\n";
 
-// const languages = [
-//
-//     { id: 71, name: "Python" },
-//
-//     { id: 54, name: "C++" },
-//
-//     { id: 63, name: "JavaScript" }
-//
-// ];
-//
-// const idToLanguage = {
-//         71 : 'python',
-//         54 : 'cpp',
-//         63 : 'javascript'
-// };
+const enumToLanguage = {
+    'PY': 'python',
+    'CPP': 'cpp',
+    'JAVA': 'java'
+};
 
-export default function LeftWorkspace({isDarkMode, position = 'left', matchId, submissions = []}) {
+const complexityStyles = {
+    'EASY': {label: 'Easy', color: '#22c55e', bg: 'rgba(34, 197, 94, 0.1)'},
+    'MEDIUM': {label: 'Medium', color: '#f97316', bg: 'rgba(249, 115, 22, 0.1)'},
+    'HARD': {label: 'Hard', color: '#ef4444', bg: 'rgba(239, 68, 68, 0.1)'}
+};
+
+const displayLanguages = {
+    'PY': 'Python',
+    'CPP': 'C++',
+    'JAVA': 'Java'
+};
+
+export default function LeftWorkspace({isDarkMode, position = 'left', matchId, submissions = [], matchOptions = null}) {
     // const [languageId, setLanguageId] = useState(71);
     const [code, setCode] = useState(DEFAULT_CODE);
     const [showResetModal, setShowResetModal] = useState(false);
@@ -125,17 +127,43 @@ export default function LeftWorkspace({isDarkMode, position = 'left', matchId, s
                                     <RunButton/>
                                     <SubmitButton onClick={handleSubmit} disabled={isSubmitting}/>
                                     <Timer/>
-                                    {/*<select*/}
-                                    {/*    className="language-select"*/}
-                                    {/*    value={languageId}*/}
-                                    {/*    onChange={(e) => setLanguageId(e.target.value)}*/}
-                                    {/*>*/}
-                                    {/*    {languages.map((lang) => (*/}
-                                    {/*        <option key={lang.id} value={lang.id}>*/}
-                                    {/*            {lang.name}*/}
-                                    {/*        </option>*/}
-                                    {/*    ))}*/}
-                                    {/*</select>*/}
+                                    {matchOptions && (
+                                        <div style={{
+                                            display: 'flex',
+                                            gap: '8px',
+                                            alignItems: 'center',
+                                            marginLeft: 'auto',
+                                            marginRight: '12px'
+                                        }}>
+                                            {/* Бейдж Языка */}
+                                            <span style={{
+                                                fontSize: '12px',
+                                                fontWeight: '600',
+                                                padding: '4px 8px',
+                                                borderRadius: '4px',
+                                                backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                                                color: '#cbd5e1',
+                                                border: '1px solid rgba(255, 255, 255, 0.1)'
+                                            }}>
+                {displayLanguages[matchOptions.language] || matchOptions.language}
+            </span>
+
+                                            {/* Бейдж Сложности */}
+                                            {matchOptions.problemLevel && (
+                                                <span style={{
+                                                    fontSize: '12px',
+                                                    fontWeight: '600',
+                                                    padding: '4px 8px',
+                                                    borderRadius: '4px',
+                                                    backgroundColor: complexityStyles[matchOptions.problemLevel.toUpperCase()]?.bg || 'rgba(255,255,255,0.05)',
+                                                    color: complexityStyles[matchOptions.problemLevel.toUpperCase()]?.color || '#fff',
+                                                    border: `1px solid ${complexityStyles[matchOptions.problemLevel.toUpperCase()]?.color || 'transparent'}`
+                                                }}>
+                    {complexityStyles[matchOptions.problemLevel.toUpperCase()]?.label || matchOptions.problemLevel}
+                </span>
+                                            )}
+                                        </div>
+                                    )}
                                     <button className="btn icon-btn" onClick={() => setShowResetModal(true)}
                                             title="Сбросить код">
                                         <RotateCcw size={16}/>
@@ -157,6 +185,7 @@ export default function LeftWorkspace({isDarkMode, position = 'left', matchId, s
                                     height="100%"
                                     theme={isDarkMode ? "vs-dark" : "light"}
                                     value={code}
+                                    language={enumToLanguage[matchOptions?.language] || 'python'}
                                     onChange={(value) => setCode(value)}
                                     options={{
                                         fontSize: 15,
@@ -177,7 +206,7 @@ export default function LeftWorkspace({isDarkMode, position = 'left', matchId, s
                             {testResults ? (
                                 <pre
                                     className={`test-text ${testResults.includes('Accepted') ? 'success' : ''}`}
-                                    style={{ whiteSpace: 'pre-wrap' }}
+                                    style={{whiteSpace: 'pre-wrap'}}
                                 >
             {testResults}
         </pre>
